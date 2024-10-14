@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <typeindex>
 #include <functional>
+#include <bitset>
 
 #include <stdio.h>
 

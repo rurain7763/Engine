@@ -3,6 +3,11 @@
 
 #include "core/Application.h"
 #include "core/Logger.h"
+
+#include "input/Input.h"
+#include "input/KeyCodes.h"
+#include "input/MouseButtons.h"
+
 #include "core/eventbus/EventBus.h"
 
 #endif // ENGINE_H

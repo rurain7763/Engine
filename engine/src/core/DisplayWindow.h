@@ -18,7 +18,7 @@ namespace engine {
         inline std::unique_ptr<EventBus>& GetEventBus() { return _eventBus; }
         inline std::unique_ptr<LayerGroup>& GetLayerGroup() { return _layerGroup; }
 
-        inline void* GetNativeWindow() { return _window; }
+        inline void* GetNativeWindow() const { return _window; }
 
     private:
         void* _window;

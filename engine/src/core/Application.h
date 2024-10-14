@@ -27,14 +27,6 @@ namespace engine {
         void OnWindowClosed(WindowClosedEvent& event);
         void OnWindowResize(WindowResizedEvent& event);
 
-        void OnKeyPressed(KeyPressedEvent& event);
-        void OnKeyReleased(KeyReleasedEvent& event);
-
-        void OnMouseButtonPressed(MouseButtonPressedEvent& event);
-        void OnMouseButtonReleased(MouseButtonReleasedEvent& event);
-        void OnMouseMoved(MouseMovedEvent& event);
-        void OnMouseScrolled(MouseScrolledEvent& event);
-
     private:
         bool _running;
 

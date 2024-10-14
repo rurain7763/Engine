@@ -25,7 +25,7 @@ namespace engine {
 
 		ImGui::StyleColorsDark();
 
-		ImGui_ImplGlfw_InitForOpenGL((GLFWwindow*)_nativeWindow, true);
+		ImGui_ImplGlfw_InitForOpenGL(static_cast<GLFWwindow*>(_nativeWindow), true);
 		ImGui_ImplOpenGL3_Init();
 	}
 

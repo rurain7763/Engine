@@ -64,18 +64,12 @@ namespace engine {
 
 		glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
 			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-
-			int key = button;
-			if(button == GLFW_MOUSE_BUTTON_LEFT) key = GLFW_MOUSE_BUTTON_LEFT;
-			else if(button == GLFW_MOUSE_BUTTON_RIGHT) key = GLFW_MOUSE_BUTTON_RIGHT;
-			else if(button == GLFW_MOUSE_BUTTON_MIDDLE) key = GLFW_MOUSE_BUTTON_MIDDLE;
-
 			switch(action) {
 				case GLFW_PRESS:
-					displayWindow->GetEventBus()->Publish<MouseButtonPressedEvent>(key);
+					displayWindow->GetEventBus()->Publish<MouseButtonPressedEvent>(button);
 					break;
 				case GLFW_RELEASE:
-					displayWindow->GetEventBus()->Publish<MouseButtonReleasedEvent>(key);
+					displayWindow->GetEventBus()->Publish<MouseButtonReleasedEvent>(button);
 					break;
 			}
 		});
