@@ -33,48 +33,54 @@ namespace engine {
             return otherOwner == _owner;
         }
 
+        EventHandler& operator=(const EventHandler& other) {
+            _owner = other._owner;
+			_handler = other._handler;
+			return *this;
+        }
+
     private:
         TOwner* _owner;
         EventHandlerFunction _handler;
     };
 
-    typedef std::vector<std::unique_ptr<IEventHandler>> EventHandlerList;
+    typedef std::list<IEventHandler*> EventHandlerList;
 
-    class EG_API EventBus {
+    class EventBus {
     public:
         EventBus() = default;
-        virtual ~EventBus() = default;
+        virtual ~EventBus() {
+            for (auto& pair : _eventHandlers) {
+                for (auto& eventHandler : pair.second) {
+                    delete eventHandler;
+                }
+            }
+            _eventHandlers.clear();
+        }
 
         template<typename TOwner, typename TEvent>
         void Subscribe(TOwner* owner, void (TOwner::*handler)(TEvent&)) {
-            std::type_index eventType = std::type_index(typeid(Event));
-            auto eventHandler = std::make_unique<EventHandler<TOwner, TEvent>>(owner, handler);
-            if(_eventHandlers.find(eventType) == _eventHandlers.end()) {
-                _eventHandlers[eventType] = EventHandlerList();
-            }
-            _eventHandlers[eventType].push_back(std::move(eventHandler));
+            std::type_index eventType = std::type_index(typeid(TEvent));
+            auto eventHandler = new EventHandler<TOwner, TEvent>(owner, handler);
+            _eventHandlers[eventType].push_back(eventHandler);
         }
 
         template<typename TOwner, typename TEvent>
-        void Unsubscribe(TOwner* owner, void (TOwner::*handler)(TEvent&)) {
-            std::type_index eventType = std::type_index(typeid(TEvent));
-            auto pair = _eventHandlers.find(eventType);
-            if(pair == _eventHandlers.end()) {
-                return;
-            }
-            // this is a bit of a hack, but it works
-            // so maybe future me can come up with a better solution
-            for(auto& eventHandler : pair->second) {
-                if(eventHandler->Equals(owner)) {
-                    swap(eventHandler, pair->second.back());
-                    return;
-                }
-            }
-
-            if(pair->second.empty()) {
-                _eventHandlers.erase(eventType);
-            }
-        }
+        void Unsubscribe(TOwner* owner) {
+			std::type_index eventType = std::type_index(typeid(Event));
+			auto pair = _eventHandlers.find(eventType);
+			if(pair == _eventHandlers.end()) {
+				return;
+			}
+			auto& eventHandlers = pair->second;
+			for(auto it = eventHandlers.begin(); it != eventHandlers.end(); ++it) {
+				if((*it)->Equals(owner)) {
+					delete *it;
+					eventHandlers.erase(it);
+					break;
+				}
+			}
+		}
 
         template<typename TEvent, typename ...TArgs>
         void Publish(TArgs&&... args) {

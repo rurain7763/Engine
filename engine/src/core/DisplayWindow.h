@@ -17,6 +17,8 @@ namespace engine {
 
     private:
         void* _window;
+        int _width, _height;
+
         std::unique_ptr<EventBus> _eventBus;
     }; 
 }
