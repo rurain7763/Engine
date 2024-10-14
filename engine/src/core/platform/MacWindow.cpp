@@ -14,6 +14,7 @@
 namespace engine {
 	DisplayWindow::DisplayWindow() {
 		_eventBus = std::make_unique<EventBus>();
+		_layerGroup = std::make_unique<LayerGroup>();
 	}
 
 	void DisplayWindow::Init(int width, int height, const char* title) {
@@ -21,6 +22,12 @@ namespace engine {
 			EG_ASSERT(false, "Failed to initialize GLFW");
 			return;
 		}
+
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 		GLFWwindow* window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 
@@ -61,18 +68,12 @@ namespace engine {
 
 		glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
 			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-
-			int key = button;
-			if(button == GLFW_MOUSE_BUTTON_LEFT) key = GLFW_MOUSE_BUTTON_LEFT;
-			else if(button == GLFW_MOUSE_BUTTON_RIGHT) key = GLFW_MOUSE_BUTTON_RIGHT;
-			else if(button == GLFW_MOUSE_BUTTON_MIDDLE) key = GLFW_MOUSE_BUTTON_MIDDLE;
-
 			switch(action) {
 				case GLFW_PRESS:
-					displayWindow->GetEventBus()->Publish<MouseButtonPressedEvent>(key);
+					displayWindow->GetEventBus()->Publish<MouseButtonPressedEvent>(button);
 					break;
 				case GLFW_RELEASE:
-					displayWindow->GetEventBus()->Publish<MouseButtonReleasedEvent>(key);
+					displayWindow->GetEventBus()->Publish<MouseButtonReleasedEvent>(button);
 					break;
 			}
 		});
@@ -89,6 +90,15 @@ namespace engine {
 				static_cast<float>(yoffset)
 			);
 		});
+	}
+
+	void DisplayWindow::Render() {
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		_layerGroup->Render();
+
+		glfwSwapBuffers(glfwGetCurrentContext());
+		glfwPollEvents();
 	}
 
 	void DisplayWindow::Destroy() {
