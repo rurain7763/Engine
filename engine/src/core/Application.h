@@ -3,6 +3,7 @@
 
 #include "EngineHeader.h"
 #include "DisplayWindow.h"
+#include "events/KeyPressedEvent.h"
 
 #include <memory>
 
@@ -12,6 +13,9 @@ namespace engine {
         Application();
         virtual ~Application();
         void Run();
+
+    private:
+        void OnKeyPressed(KeyPressedEvent& event);
 
     private:
         std::unique_ptr<DisplayWindow> _window;

@@ -6,7 +6,9 @@
 #include <vector>
 #include <memory>
 #include <utility>
+#include <unordered_map>
 #include <algorithm>
+#include <typeindex>
 #include <functional>
 
 #include <stdio.h>

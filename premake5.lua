@@ -6,6 +6,7 @@ workspace "Engine"
     }
 
     includedirs {
+        "./engine/src/core",
         "./vendor/spdlog/include",
         "./vendor/GLFW/include"
     }
@@ -25,7 +26,7 @@ project "engine"
     }
     
     filter "system:macosx"
-        pchheader "./engine/src/core/pch.cpp"
+        pchheader "./engine/src/core/pch.h"
 
         defines  {
             "PLATFORM_MAC",
@@ -79,7 +80,8 @@ project "sandbox"
     links "engine"
 
     includedirs {
-        "./engine/src"
+        "./engine/src",
+        "./engine/src/core"
     }
 
     files {
