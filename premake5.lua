@@ -10,6 +10,8 @@ workspace "Engine"
         "./vendor/GLFW/include"
     }
 
+    startproject "sandbox"
+
 project "engine"
     kind "SharedLib"
     language "C++"
@@ -48,6 +50,15 @@ project "engine"
         defines  {
             "PLATFORM_WINDOWS",
             "BUILD_DLL"
+        }
+
+        libdirs {
+            "./vendor/GLFW/lib-vc2022"
+        }
+
+        links {
+            "glfw3",
+            "opengl32"
         }
 
     filter "configurations:Debug"

@@ -1,14 +1,13 @@
+#include "pch.h"
 #include "Application.h"
 #include "Logger.h"
 
 namespace engine {
-    GLFWwindow* window;
-
     Application::Application() {
         Logger::init();
         LOG_EG_INFO("Created application");
 
-        _window = std::make_unique<Windows>();
+        _window = std::make_unique<DisplayWindow>();
         _window->Init(800, 600, "Engine");
     }
 

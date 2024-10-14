@@ -4,17 +4,17 @@
 #include "EngineHeader.h"
 
 namespace engine {
-    class EG_API Windows {
+    class EG_API DisplayWindow {
     public:
-        Windows() = default;
-        virtual ~Windows() = default;
+        DisplayWindow() = default;
+        virtual ~DisplayWindow() = default;
 
         void Init(int width, int height, const char* title);
         void Destroy();
 
     private:
-        struct GLFWwindow* _window;
-    };
+        void* _window;
+    }; 
 }
 
 #endif

@@ -1,8 +1,6 @@
 #ifndef ENGINEHEADER_H
 #define ENGINEHEADER_H
 
-#include "pch.h"
-
 #ifdef PLATFORM_MAC
     #ifdef BUILD_DLL
         #define EG_API __attribute__((visibility("default")))
