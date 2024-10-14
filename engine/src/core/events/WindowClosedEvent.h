@@ -4,13 +4,15 @@
 #include "EngineHeader.h"
 #include "../eventbus/Event.h"
 
-class WindowClosedEvent : public Event {
-public:
-    WindowClosedEvent() = default;
+namespace engine {
+    class WindowClosedEvent : public Event {
+    public:
+        WindowClosedEvent() = default;
 
-    std::string ToString() const {
-        return "WindowClosedEvent: ";
-    }
-};
+        std::string ToString() const {
+            return "WindowClosedEvent: ";
+        }
+    };
+}
 
 #endif

@@ -3,25 +3,22 @@
 #include "Logger.h"
 
 #include "eventbus/EventBus.h"
-#include "events/WindowClosedEvent.h"
-#include "events/WindowResizedEvent.h"
-#include "events/KeyPressedEvent.h"
-#include "events/KeyReleasedEvent.h"
-#include "events/MouseButtonPressedEvent.h"
-#include "events/MouseButtonReleasedEvent.h"
-#include "events/MouseMovedEvent.h"
-#include "events/MouseScrolledEvent.h"
-
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
+#include "layers/ImGuiLayer.h"
 
 namespace engine {
     Application::Application() {
+        _running = false;
+
         Logger::init();
-        LOG_EG_INFO("Created application");
 
         _window = std::make_unique<DisplayWindow>();
+    }
+
+    Application::~Application() {
+        
+    }
+
+    void Application::Init() {
         _window->Init(800, 600, "Engine");
         _window->GetEventBus()->Subscribe<Application, WindowClosedEvent>(this, &Application::OnWindowClosed);
         _window->GetEventBus()->Subscribe<Application, WindowResizedEvent>(this, &Application::OnWindowResize);
@@ -29,33 +26,30 @@ namespace engine {
         _window->GetEventBus()->Subscribe<Application, KeyReleasedEvent>(this, &Application::OnKeyReleased);
         _window->GetEventBus()->Subscribe<Application, MouseButtonPressedEvent>(this, &Application::OnMouseButtonPressed);
         _window->GetEventBus()->Subscribe<Application, MouseButtonReleasedEvent>(this, &Application::OnMouseButtonReleased);
-		_window->GetEventBus()->Subscribe<Application, MouseMovedEvent>(this, &Application::OnMouseMoved);
-		_window->GetEventBus()->Subscribe<Application, MouseScrolledEvent>(this, &Application::OnMouseScrolled);
-    }
+        _window->GetEventBus()->Subscribe<Application, MouseMovedEvent>(this, &Application::OnMouseMoved);
+        _window->GetEventBus()->Subscribe<Application, MouseScrolledEvent>(this, &Application::OnMouseScrolled);
 
-    Application::~Application() {
-        _window->Destroy();
+        _window->GetLayerGroup()->AddLayer<ImGuiLayer>(_window.get());
+
+        _running = true;
     }
 
     void Application::Run() {
-        while(!glfwWindowShouldClose(glfwGetCurrentContext())) {
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            ImGui_ImplOpenGL3_NewFrame();
-            ImGui_ImplGlfw_NewFrame();
-            ImGui::NewFrame();
-
-            ImGui::ShowDemoWindow();
-
-            ImGui::Render();
-            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-            glfwSwapBuffers(glfwGetCurrentContext());
-            glfwPollEvents();
+        while(_running) {
+            // TODO: Process events
+            // TODO: Update
+            _window->Render();
         }
     }
 
+    void Application::Shutdown() {
+        _window->Destroy();
+
+        _running = false;
+    }
+
     void Application::OnWindowClosed(WindowClosedEvent& event) {
+        _running = false;
 		LOG_EG_INFO("Window closed");
 	}
 

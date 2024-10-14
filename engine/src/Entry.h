@@ -8,15 +8,19 @@ engine::Application* CreateApplication();
 
 #ifdef PLATFORM_MAC
 int main(int argc, char** argv) {
-    engine::Application* app = CreateApplication();
-    app->Run();
-    delete app;
-    return 0;
+	engine::Application* app = CreateApplication();
+	app->Init();
+	app->Run();
+	app->Shutdown();
+	delete app;
+	return 0;
 }
 #elif PLATFORM_WINDOWS
 int main(int argc, char** argv) {
 	engine::Application* app = CreateApplication();
+	app->Init();
 	app->Run();
+	app->Shutdown();
 	delete app;
 	return 0;
 }

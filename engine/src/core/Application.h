@@ -4,23 +4,24 @@
 #include "EngineHeader.h"
 #include "DisplayWindow.h"
 
-class WindowClosedEvent;
-class WindowResizedEvent;
-
-class KeyPressedEvent;
-class KeyReleasedEvent;
-
-class MouseButtonPressedEvent;
-class MouseButtonReleasedEvent;
-class MouseMovedEvent;
-class MouseScrolledEvent;
+#include "events/WindowClosedEvent.h"
+#include "events/WindowResizedEvent.h"
+#include "events/KeyPressedEvent.h"
+#include "events/KeyReleasedEvent.h"
+#include "events/MouseButtonPressedEvent.h"
+#include "events/MouseButtonReleasedEvent.h"
+#include "events/MouseMovedEvent.h"
+#include "events/MouseScrolledEvent.h"
 
 namespace engine {
     class EG_API Application {
     public:
         Application();
         virtual ~Application();
+
+        void Init();
         void Run();
+        void Shutdown();
 
     private:
         void OnWindowClosed(WindowClosedEvent& event);
@@ -35,7 +36,9 @@ namespace engine {
         void OnMouseScrolled(MouseScrolledEvent& event);
 
     private:
-        std::unique_ptr<DisplayWindow> _window;
+        bool _running;
+
+        std::shared_ptr<DisplayWindow> _window;
     };
 };
 

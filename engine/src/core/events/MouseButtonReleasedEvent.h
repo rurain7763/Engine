@@ -4,18 +4,20 @@
 #include "EngineHeader.h"
 #include "../eventbus/Event.h"
 
-class MouseButtonReleasedEvent : public Event {
-public:
-    MouseButtonReleasedEvent(int key) : _key(key) {}
+namespace engine {
+    class MouseButtonReleasedEvent : public Event {
+    public:
+        MouseButtonReleasedEvent(int key) : _key(key) {}
 
-    inline int GetKey() const { return _key; }
+        inline int GetKey() const { return _key; }
 
-    std::string ToString() const {
-        return "MouseButtonReleasedEvent: " + std::to_string(_key);
-    }
+        std::string ToString() const {
+            return "MouseButtonReleasedEvent: " + std::to_string(_key);
+        }
 
-private:
-    int _key;
-};
+    private:
+        int _key;
+    };
+}
 
 #endif
