@@ -12,16 +12,16 @@ project "engine"
     targetdir "bin/%{cfg.buildcfg}/%{cfg.architecture}/sandbox"
     objdir "bin_obj/%{cfg.buildcfg}/%{cfg.architecture}/engine"
 
-    pchheader "./engine/src/core/pch.h"
+    pchheader "pch.h"
+    pchsource "./engine/src/core/pch.cpp"
 
     includedirs {
         "./vendor/spdlog/include"
     }
 
     files {
-        "./engine/src/*.h",
-        "./engine/src/*.cpp",
-        "./engine/src/core/*.cpp"
+        "./engine/src/**.h",
+        "./engine/src/**.cpp",
     }
     
     filter "system:macosx"
@@ -29,6 +29,12 @@ project "engine"
             "PLATFORM_MAC",
             "BUILD_DLL"
         }
+
+    filter "system:windows"
+		defines  {
+			"PLATFORM_WINDOWS",
+			"BUILD_DLL"
+		}
 
     filter "configurations:Debug"
         defines {
@@ -53,13 +59,18 @@ project "sandbox"
     }
 
     files {
-        "./sandbox/src/*.h",
-        "./sandbox/src/*.cpp"
+        "./sandbox/src/**.h",
+        "./sandbox/src/**.cpp"
     }
 
     filter "system:macosx"
         defines  {
             "PLATFORM_MAC"
+        }
+
+    filter "system:windows"
+        defines  {
+            "PLATFORM_WINDOWS"
         }
 
     filter "configurations:Debug"

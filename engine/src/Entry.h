@@ -13,6 +13,13 @@ int main(int argc, char** argv) {
     delete app;
     return 0;
 }
+#elif PLATFORM_WINDOWS
+int main(int argc, char** argv) {
+	engine::Application* app = CreateApplication();
+	app->Run();
+	delete app;
+	return 0;
+}
 #endif
 
 #endif // ENTRY_H

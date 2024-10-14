@@ -1,7 +1,6 @@
+#include "pch.h"
 #include "Application.h"
 #include "Logger.h"
-
-#include "pch.h"
 
 namespace engine {
     Application::Application() {
@@ -15,4 +14,4 @@ namespace engine {
     void Application::Run() {
         
     }
-};
+}
