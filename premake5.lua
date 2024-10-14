@@ -5,6 +5,11 @@ workspace "Engine"
         "Release"
     }
 
+    includedirs {
+        "./vendor/spdlog/include",
+        "./vendor/GLFW/include"
+    }
+
 project "engine"
     kind "SharedLib"
     language "C++"
@@ -12,29 +17,38 @@ project "engine"
     targetdir "bin/%{cfg.buildcfg}/%{cfg.architecture}/sandbox"
     objdir "bin_obj/%{cfg.buildcfg}/%{cfg.architecture}/engine"
 
-    pchheader "pch.h"
-    pchsource "./engine/src/core/pch.cpp"
-
-    includedirs {
-        "./vendor/spdlog/include"
-    }
-
     files {
         "./engine/src/**.h",
         "./engine/src/**.cpp",
     }
     
     filter "system:macosx"
+        pchheader "./engine/src/core/pch.cpp"
+
         defines  {
             "PLATFORM_MAC",
             "BUILD_DLL"
         }
 
+        libdirs {
+            "./vendor/GLFW/lib-arm64"
+        }    
+
+        links {
+            "glfw3",
+            "OpenGL.framework",
+            "Cocoa.framework",
+            "IOkit.framework"
+        }
+
     filter "system:windows"
-		defines  {
-			"PLATFORM_WINDOWS",
-			"BUILD_DLL"
-		}
+        pchheader "pch.h"
+        pchsource "./engine/src/core/pch.cpp"
+
+        defines  {
+            "PLATFORM_WINDOWS",
+            "BUILD_DLL"
+        }
 
     filter "configurations:Debug"
         defines {
@@ -54,8 +68,7 @@ project "sandbox"
     links "engine"
 
     includedirs {
-        "./engine/src",
-        "./vendor/spdlog/include"
+        "./engine/src"
     }
 
     files {
@@ -81,5 +94,6 @@ project "sandbox"
 
     filter "configurations:Release"
         optimize "On"
+
 
 

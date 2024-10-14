@@ -29,4 +29,16 @@ namespace engine {
 #define LOG_APP_ERROR(...) Logger::getClientLogger()->error(__VA_ARGS__)
 #define LOG_APP_FATAL(...) Logger::getClientLogger()->critical(__VA_ARGS__)
 
+#ifdef PLATFORM_MAC
+    #define __debugbreak() __builtin_trap()
+#elif PLATFORM_WINDOWS
+    #define __debugbreak() __debugbreak()
+#endif
+
+#ifdef DEBUG
+    #define EG_ASSERT(x, ...) { if(!(x)) { LOG_EG_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+#else
+    #define EG_ASSERT(x, ...)
+#endif
+
 #endif

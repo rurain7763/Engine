@@ -12,9 +12,11 @@
 #include <stdio.h>
 
 #ifdef PLATFORM_MAC
-    // Add Mac-specific headers here
+    #define GL_SILENCE_DEPRECATION
 #elif PLATFORM_WINDOWS
     #include <Windows.h>
 #endif
+
+#include "GLFW/glfw3.h"
 
 #endif // PCH_H

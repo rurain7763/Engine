@@ -2,6 +2,7 @@
 #define APPLICATION_H
 
 #include "EngineHeader.h"
+#include "Windows.h"
 
 namespace engine {
     class EG_API Application {
@@ -9,6 +10,9 @@ namespace engine {
         Application();
         virtual ~Application();
         void Run();
+
+    private:
+        std::unique_ptr<Windows> _window;
     };
 };
 
