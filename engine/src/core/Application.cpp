@@ -12,6 +12,10 @@
 #include "events/MouseMovedEvent.h"
 #include "events/MouseScrolledEvent.h"
 
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+
 namespace engine {
     Application::Application() {
         Logger::init();
@@ -36,6 +40,16 @@ namespace engine {
     void Application::Run() {
         while(!glfwWindowShouldClose(glfwGetCurrentContext())) {
             glClear(GL_COLOR_BUFFER_BIT);
+
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+
+            ImGui::ShowDemoWindow();
+
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
             glfwSwapBuffers(glfwGetCurrentContext());
             glfwPollEvents();
         }

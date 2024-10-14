@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #ifdef PLATFORM_WINDOWS
 #include "../DisplayWindow.h"
 #include "../Logger.h"
@@ -12,6 +10,10 @@
 #include "../events/MouseButtonReleasedEvent.h"
 #include "../events/MouseMovedEvent.h"
 #include "../events/MouseScrolledEvent.h"
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 namespace engine {
 	DisplayWindow::DisplayWindow() {
@@ -91,10 +93,24 @@ namespace engine {
 				static_cast<float>(yoffset)
 			);
 		});
+
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+		ImGui_ImplGlfw_InitForOpenGL(window, true);
+		ImGui_ImplOpenGL3_Init();
 	}
 
 	void DisplayWindow::Destroy() {
 		GLFWwindow* window = (GLFWwindow*)_window;
+
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
+
 		glfwDestroyWindow(window);
 		glfwTerminate();
 	}

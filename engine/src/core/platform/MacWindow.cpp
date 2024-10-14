@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #ifdef PLATFORM_MAC
 #include "../DisplayWindow.h"
 #include "../Logger.h"

@@ -7,8 +7,9 @@ workspace "Engine"
 
     includedirs {
         "./engine/src/core",
+        "./vendor",
         "./vendor/spdlog/include",
-        "./vendor/GLFW/include"
+        "./vendor/GLFW/include",
     }
 
     startproject "sandbox"
@@ -23,11 +24,11 @@ project "engine"
     files {
         "./engine/src/**.h",
         "./engine/src/**.cpp",
+        "./vendor/imgui/*.h",
+        "./vendor/imgui/*.cpp"
     }
     
     filter "system:macosx"
-        pchheader "./engine/src/core/pch.h"
-
         defines  {
             "PLATFORM_MAC",
             "BUILD_DLL"
@@ -45,9 +46,6 @@ project "engine"
         }
 
     filter "system:windows"
-        pchheader "pch.h"
-        pchsource "./engine/src/core/pch.cpp"
-
         defines  {
             "PLATFORM_WINDOWS",
             "BUILD_DLL"
