@@ -11,7 +11,7 @@ namespace engine {
     Application::Application() {
         _running = false;
 
-        Logger::init();
+        Logger::Init();
 
         _window = std::make_unique<DisplayWindow>();
     }
@@ -47,10 +47,10 @@ namespace engine {
 
     void Application::OnWindowClosed(WindowClosedEvent& event) {
         _running = false;
-		LOG_EG_INFO("Window closed");
+		EG_LOG_INFO("Window closed");
 	}
 
     void Application::OnWindowResize(WindowResizedEvent& event) {
-		LOG_EG_INFO("Window resized: {0}x{1}", event.GetX(), event.GetY());
+		EG_LOG_INFO("Window resized: %dx%d", event.GetX(), event.GetY());
 	} 
 }

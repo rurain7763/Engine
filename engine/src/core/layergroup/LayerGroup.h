@@ -15,9 +15,12 @@ namespace engine {
 			int id = _layerCount++;
 			TLayer* layer = new TLayer(std::forward<TArgs>(args)...);
 			_layers.push_back(layer);
-			_idToIndex[id] = _layers.size() - 1;
-			_indexToId[_layers.size() - 1] = id;
-			for (int i = _layers.size() - 1; i > 0; i--) {
+
+			unsigned int sz = static_cast<unsigned int>(_layers.size());
+
+			_idToIndex[id] = sz - 1;
+			_indexToId[sz - 1] = id;
+			for (unsigned int i = sz - 1; i > 0; i--) {
 				if (_layers[i]->GetOrder() < _layers[i - 1]->GetOrder()) {
 					SwapLayers(i, i - 1);
 				} else {

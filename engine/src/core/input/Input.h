@@ -18,10 +18,10 @@ namespace engine {
 
 		static bool IsKeyPressed(int keycode);
 		static bool IsMouseButtonPressed(int button);
-		static float GetMouseX();
-		static float GetMouseY();
-		static float GetMouseScrollX();
-		static float GetMouseScrollY();
+		static int GetMouseX();
+		static int GetMouseY();
+		static double GetMouseScrollX();
+		static double GetMouseScrollY();
 
 	private:
 		void OnKeyPressed(KeyPressedEvent& event);
@@ -35,9 +35,9 @@ namespace engine {
 	private:
 		static Input* s_instance;
 
-		float _mouseX, _mouseY;
+		int _mouseX, _mouseY;
 		std::bitset<8> _mouseBit;
-		float _mouseScrollX, _mouseScrollY;
+		double _mouseScrollX, _mouseScrollY;
 
 		std::bitset<512> _keyBit;
 	};

@@ -4,16 +4,24 @@
 #include "pch.h"
 
 #ifdef PLATFORM_MAC
-    #ifdef BUILD_DLL
-        #define EG_API __attribute__((visibility("default")))
+    #ifdef EG_LINKING_DYNAMIC
+        #ifdef BUILD_DLL
+            #define EG_API __attribute__((visibility("default")))
+        #else
+            #define EG_API
+        #endif
     #else
-        #define EG_API
+	    #define EG_API
     #endif
 #elif PLATFORM_WINDOWS
-    #ifdef BUILD_DLL
-        #define EG_API __declspec(dllexport)
+    #ifdef EG_LINKING_DYNAMIC
+        #ifdef BUILD_DLL
+            #define EG_API __declspec(dllexport)
+        #else
+            #define EG_API __declspec(dllimport)
+        #endif
     #else
-        #define EG_API __declspec(dllimport)
+        #define EG_API
     #endif
 #endif
 

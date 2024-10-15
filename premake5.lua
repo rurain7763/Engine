@@ -14,15 +14,15 @@ workspace "Engine"
 
 project "engine"
     location "engine"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
     cppdialect "C++17"
     targetdir "bin/%{cfg.buildcfg}/%{cfg.architecture}/sandbox"
     objdir "bin_obj/%{cfg.buildcfg}/%{cfg.architecture}/engine"
 
     includedirs {
-        "./engine/vendors/GLFW/include",
         "./engine/vendors/glm/glm/**.hpp",
+        "./engine/vendors/GLFW/include",
         "./engine/vendors/imgui",
         "./engine/vendors/imgui/backends",
         "./engine/vendors/spdlog/include"
@@ -36,11 +36,14 @@ project "engine"
         "./engine/vendors/imgui/backends/imgui_impl_glfw.*",
         "./engine/vendors/imgui/backends/imgui_impl_opengl3.*"
     }
+
+    defines {
+        "_CRT_SECURE_NO_WARNINGS"
+    }
     
     filter "system:macosx"
         defines  {
-            "PLATFORM_MAC",
-            "BUILD_DLL"
+            "PLATFORM_MAC"
         }
 
         libdirs {
@@ -57,8 +60,7 @@ project "engine"
     filter "system:windows"
         systemversion "latest"
         defines  {
-            "PLATFORM_WINDOWS",
-            "BUILD_DLL"
+            "PLATFORM_WINDOWS"
         }
 
         libdirs {
@@ -74,12 +76,14 @@ project "engine"
         defines {
             "DEBUG"
         }
+        runtime "Debug"
         symbols "On"
 
     filter "configurations:Release"
         defines {
             "RELEASE"
         }
+        runtime "Release"
         optimize "On"
 
 project "sandbox"
@@ -89,16 +93,19 @@ project "sandbox"
     cppdialect "C++17"
     targetdir "bin/%{cfg.buildcfg}/%{cfg.architecture}/sandbox"
     objdir "bin_obj/%{cfg.buildcfg}/%{cfg.architecture}/sandbox"
-    links "engine"
-
+    
     includedirs {
         "./engine/src",
         "./engine/src/core"
     }
-
+    
     files {
         "./sandbox/src/**.h",
         "./sandbox/src/**.cpp"
+    }
+
+    links {
+        "engine"
     }
 
     filter "system:macosx"
@@ -117,12 +124,14 @@ project "sandbox"
         defines {
             "DEBUG"
         }
+        runtime "Debug"
         symbols "On"
 
     filter "configurations:Release"
         defines {
             "RELEASE"
         }
+        runtime "Release"
         optimize "On"
 
 

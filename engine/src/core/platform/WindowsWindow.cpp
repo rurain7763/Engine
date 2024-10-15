@@ -12,6 +12,9 @@
 #include "../events/MouseScrolledEvent.h"
 
 #include "../layers/ImGuiLayer.h"
+#include "graphics/opengl/OpenGLContext.h"
+
+#include "GLFW/glfw3.h"
 
 namespace engine {
 	DisplayWindow::DisplayWindow() {
@@ -20,17 +23,13 @@ namespace engine {
 	}
 
 	void DisplayWindow::Init(int width, int height, const char* title) {
-		if(glfwInit() == GLFW_FALSE) {
-			EG_ASSERT(false, "Failed to initialize GLFW");
-			return;
-		}
+		EG_ASSERT(glfwInit() == GLFW_TRUE, "Failed to initialize GLFW");
 
 		GLFWwindow* window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+		EG_ASSERT(window != nullptr, "Failed to create window");
 
-		if(window == nullptr) {
-			EG_ASSERT(false, "Failed to create window");
-			return;
-		}
+		_graphicsContext = new OpenGLContext(window);
+		_graphicsContext->Init();
 
 		glfwMakeContextCurrent(window);
 
@@ -76,15 +75,12 @@ namespace engine {
 
 		glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos) {
 			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-			displayWindow->GetEventBus()->Publish<MouseMovedEvent>(xpos, ypos);
+			displayWindow->GetEventBus()->Publish<MouseMovedEvent>(static_cast<int>(xpos), static_cast<int>(ypos));
 		});
 
 		glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset) {
 			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-			displayWindow->GetEventBus()->Publish<MouseScrolledEvent>(
-				static_cast<float>(xoffset), 
-				static_cast<float>(yoffset)
-			);
+			displayWindow->GetEventBus()->Publish<MouseScrolledEvent>(xoffset, yoffset);
 		});
 	}
 
@@ -93,13 +89,14 @@ namespace engine {
 
 		_layerGroup->Render();
 
-		glfwSwapBuffers(glfwGetCurrentContext());
+		_graphicsContext->SwapBuffers();
 		glfwPollEvents();
 	}
 
 	void DisplayWindow::Destroy() {
 		GLFWwindow* window = (GLFWwindow*)_window;
 
+		delete _graphicsContext;
 		glfwDestroyWindow(window);
 		glfwTerminate();
 	}

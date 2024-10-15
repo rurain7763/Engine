@@ -33,19 +33,19 @@ namespace engine {
 		return s_instance->_mouseBit.test(button);
 	}
 
-	float Input::GetMouseX() {
+	int Input::GetMouseX() {
 		return s_instance->_mouseX;
 	}
 
-	float Input::GetMouseY() {
+	int Input::GetMouseY() {
 		return s_instance->_mouseY;
 	}
 
-	float Input::GetMouseScrollX() {
+	double Input::GetMouseScrollX() {
 		return s_instance->_mouseScrollX;
 	}
 
-	float Input::GetMouseScrollY() {
+	double Input::GetMouseScrollY() {
 		return s_instance->_mouseScrollY;
 	}
 

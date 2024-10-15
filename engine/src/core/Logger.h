@@ -2,32 +2,37 @@
 #define LOGGER_H
 
 #include "EngineHeader.h"
-#include "spdlog/spdlog.h"
 
 namespace engine {
     class EG_API Logger {
     public:
-        static void init();
-        inline static std::shared_ptr<spdlog::logger>& getCoreLogger() { return s_CoreLogger; }
-        inline static std::shared_ptr<spdlog::logger>& getClientLogger() { return s_ClientLogger; }
+        static void Init();
 
-    private:
-        static std::shared_ptr<spdlog::logger> s_CoreLogger;
-        static std::shared_ptr<spdlog::logger> s_ClientLogger;
+        static void EGTrace(const char* fmt, ...);
+        static void EGInfo(const char* fmt, ...);
+        static void EGWarn(const char* fmt, ...);
+        static void EGError(const char* fmt, ...);
+        static void EGFatal(const char* fmt, ...);
+
+        static void AppTrace(const char* fmt, ...);
+        static void AppInfo(const char* fmt, ...);
+        static void AppWarn(const char* fmt, ...);
+        static void AppError(const char* fmt, ...);
+        static void AppFatal(const char* fmt, ...);
     };
 }
 
-#define LOG_EG_TRACE(...) Logger::getCoreLogger()->trace(__VA_ARGS__)
-#define LOG_EG_INFO(...) Logger::getCoreLogger()->info(__VA_ARGS__)
-#define LOG_EG_WARN(...) Logger::getCoreLogger()->warn(__VA_ARGS__)
-#define LOG_EG_ERROR(...) Logger::getCoreLogger()->error(__VA_ARGS__)
-#define LOG_EG_FATAL(...) Logger::getCoreLogger()->critical(__VA_ARGS__)
+#define EG_LOG_TRACE(fmt, ...) Logger::EGTrace(fmt, __VA_ARGS__)
+#define EG_LOG_INFO(fmt, ...) Logger::EGInfo(fmt, __VA_ARGS__)
+#define EG_LOG_WARN(fmt, ...) Logger::EGWarn(fmt, __VA_ARGS__)
+#define EG_LOG_ERROR(fmt, ...) Logger::EGError(fmt, __VA_ARGS__)
+#define EG_LOG_FATAL(fmt, ...) Logger::EGFatal(fmt, __VA_ARGS__)
 
-#define LOG_APP_TRACE(...) Logger::getClientLogger()->trace(__VA_ARGS__)
-#define LOG_APP_INFO(...) Logger::getClientLogger()->info(__VA_ARGS__)
-#define LOG_APP_WARN(...) Logger::getClientLogger()->warn(__VA_ARGS__)
-#define LOG_APP_ERROR(...) Logger::getClientLogger()->error(__VA_ARGS__)
-#define LOG_APP_FATAL(...) Logger::getClientLogger()->critical(__VA_ARGS__)
+#define LOG_TRACE(fmt, ...) Logger::AppTrace(fmt, __VA_ARGS__)
+#define LOG_INFO(fmt, ...) Logger::AppInfo(fmt, __VA_ARGS__)
+#define LOG_WARN(fmt, ...) Logger::AppWarn(fmt, __VA_ARGS__)
+#define LOG_ERROR(fmt, ...) Logger::AppError(fmt, __VA_ARGS__)
+#define LOG_FATAL(fmt, ...) Logger::AppFatal(fmt, __VA_ARGS__)
 
 #ifdef PLATFORM_MAC
     #define __debugbreak() __builtin_trap()
@@ -36,9 +41,9 @@ namespace engine {
 #endif
 
 #ifdef DEBUG
-    #define EG_ASSERT(x, ...) { if(!(x)) { LOG_EG_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
-#else
-    #define EG_ASSERT(x, ...)
+    #define EG_ASSERT(x, fmt, ...) if(!(x)) { EG_LOG_FATAL(fmt, __VA_ARGS__); __debugbreak(); }
+#elif RELEASE
+    #define EG_ASSERT(x, ...) x
 #endif
 
 #endif

@@ -7,7 +7,14 @@ const int LAYER_ORDER_MAX = 1000;
 
 class EG_API Layer {
 public:
-    Layer(const std::string& name = "Layer", int order = 0) : _order(fmin(order, LAYER_ORDER_MAX)), _name(name) {}
+    Layer(const std::string& name = "Layer", int order = 0) {
+        _name = name;
+		_order = order;
+        if(_order > LAYER_ORDER_MAX) {
+			_order = LAYER_ORDER_MAX;
+		}
+    }
+
     virtual ~Layer() = default;
 
     virtual void OnAttach() {}

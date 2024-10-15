@@ -24,6 +24,8 @@ namespace engine {
         void* _window;
         int _width, _height;
 
+        class GraphicsContext* _graphicsContext;
+
         std::unique_ptr<EventBus> _eventBus;
         std::unique_ptr<LayerGroup> _layerGroup;
     }; 
