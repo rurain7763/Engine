@@ -15,17 +15,26 @@ workspace "Engine"
     startproject "sandbox"
 
 project "engine"
+    location "engine"
     kind "SharedLib"
     language "C++"
     cppdialect "C++17"
     targetdir "bin/%{cfg.buildcfg}/%{cfg.architecture}/sandbox"
     objdir "bin_obj/%{cfg.buildcfg}/%{cfg.architecture}/engine"
 
+    includedirs {
+        "./engine/vendors/glm/glm/**.hpp",
+        "./engine/vendors/imgui",
+        "./engine/vendors/imgui/backends"
+    }
+
     files {
         "./engine/src/**.h",
         "./engine/src/**.cpp",
-        "./vendor/imgui/*.h",
-        "./vendor/imgui/*.cpp"
+        "./engine/vendors/imgui/*.h",
+        "./engine/vendors/imgui/*.cpp",
+        "./engine/vendors/imgui/backends/imgui_impl_glfw.*",
+        "./engine/vendors/imgui/backends/imgui_impl_opengl3.*"
     }
     
     filter "system:macosx"
@@ -46,6 +55,7 @@ project "engine"
         }
 
     filter "system:windows"
+        systemversion "latest"
         defines  {
             "PLATFORM_WINDOWS",
             "BUILD_DLL"
@@ -67,9 +77,13 @@ project "engine"
         symbols "On"
 
     filter "configurations:Release"
+        defines {
+            "RELEASE"
+        }
         optimize "On"
 
 project "sandbox"
+    location "sandbox"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
@@ -93,6 +107,8 @@ project "sandbox"
         }
 
     filter "system:windows"
+        systemversion "latest"
+
         defines  {
             "PLATFORM_WINDOWS"
         }
@@ -104,6 +120,9 @@ project "sandbox"
         symbols "On"
 
     filter "configurations:Release"
+        defines {
+            "RELEASE"
+        }
         optimize "On"
 
 
