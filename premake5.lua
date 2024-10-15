@@ -7,9 +7,7 @@ workspace "Engine"
 
     includedirs {
         "./engine/src/core",
-        "./vendor",
-        "./vendor/spdlog/include",
-        "./vendor/GLFW/include",
+        "./vendor"
     }
 
     startproject "sandbox"
@@ -23,9 +21,11 @@ project "engine"
     objdir "bin_obj/%{cfg.buildcfg}/%{cfg.architecture}/engine"
 
     includedirs {
+        "./engine/vendors/GLFW/include",
         "./engine/vendors/glm/glm/**.hpp",
         "./engine/vendors/imgui",
-        "./engine/vendors/imgui/backends"
+        "./engine/vendors/imgui/backends",
+        "./engine/vendors/spdlog/include"
     }
 
     files {
@@ -44,7 +44,7 @@ project "engine"
         }
 
         libdirs {
-            "./vendor/GLFW/lib-arm64"
+            "./engine/vendors/GLFW/lib-arm64"
         }    
 
         links {
@@ -62,7 +62,7 @@ project "engine"
         }
 
         libdirs {
-            "./vendor/GLFW/lib-vc2022"
+            "./engine/vendors/GLFW/lib-vc2022"
         }
 
         links {
