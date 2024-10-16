@@ -6,14 +6,16 @@
 namespace engine {
 	class OpenGLVertexBuffer : public VertexBuffer {
 	public:
-		OpenGLVertexBuffer(float* vertices, unsigned int count);
+		OpenGLVertexBuffer();
 		virtual ~OpenGLVertexBuffer();
+
+		virtual void SetData(const float* vertices, unsigned int count) override;
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
 		virtual void SetLayout(const VertexBufferLayout& layout) override;
-		virtual const VertexBufferLayout& GetLayoutGroup() const override;
+		virtual const VertexBufferLayout& GetLayout() const override;
 
 	private:
 		unsigned int _id;
@@ -22,8 +24,10 @@ namespace engine {
 
 	class OpenGLIndexBuffer : public IndexBuffer {
 	public:
-		OpenGLIndexBuffer(unsigned int* indices, unsigned int count);
+		OpenGLIndexBuffer();
 		virtual ~OpenGLIndexBuffer();
+
+		virtual void SetData(unsigned int* indices, unsigned int count) override;
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;

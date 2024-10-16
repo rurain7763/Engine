@@ -29,10 +29,10 @@ namespace engine {
         std::unique_ptr<EventBus> _eventBus;
         std::unique_ptr<LayerGroup> _layerGroup;
 
-        unsigned int _vao;
-        std::unique_ptr<class VertexBuffer> _vertexBuffer;
-        std::unique_ptr<class IndexBuffer> _indexBuffer;
-        std::unique_ptr<class Shader> _shader;
+        std::shared_ptr<class VertexArray> _vertexArray;
+        std::shared_ptr<class VertexBuffer> _vertexBuffer;
+        std::shared_ptr<class IndexBuffer> _indexBuffer;
+        std::shared_ptr<class Shader> _shader;
     }; 
 }
 

@@ -57,11 +57,13 @@ namespace engine {
 	public:
 		virtual ~VertexBuffer() = default;
 
+        virtual void SetData(const float* data, unsigned int count) = 0;
+
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
         virtual void SetLayout(const VertexBufferLayout& layout) = 0;
-        virtual const VertexBufferLayout& GetLayoutGroup() const = 0;
+        virtual const VertexBufferLayout& GetLayout() const = 0;
 
 		static VertexBuffer* Create(float* vertices, unsigned int count);
 	};
@@ -69,6 +71,8 @@ namespace engine {
 	class IndexBuffer {
 	public:
 		virtual ~IndexBuffer() = default;
+
+        virtual void SetData(unsigned int* indices, unsigned int count) = 0;
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;

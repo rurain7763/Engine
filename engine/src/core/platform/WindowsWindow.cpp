@@ -15,6 +15,7 @@
 #include "graphics/GraphicsContext.h"
 #include "graphics/Shader.h"
 #include "graphics/Buffer.h"
+#include "graphics/VertexArray.h"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -85,10 +86,9 @@ namespace engine {
 			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
 			displayWindow->GetEventBus()->Publish<MouseScrolledEvent>(xoffset, yoffset);
 		});
-
-		
-		glGenVertexArrays(1, &_vao);
-		glBindVertexArray(_vao);
+	
+		_vertexArray.reset(VertexArray::Create());
+		_vertexArray->Bind();
 
 		float vertices[] = {
 			-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
@@ -103,36 +103,11 @@ namespace engine {
 		layout.Push<float>("aColor", 4);
 
 		_vertexBuffer->SetLayout(layout);
-
-		int i = 0;
-		int offset = 0;
-		for (const auto& element : _vertexBuffer->GetLayoutGroup()) {
-			glEnableVertexAttribArray(i);
-
-			GLenum type = GL_FLOAT;
-			switch (element.type) {
-				case DataType::Float: type = GL_FLOAT;	break;
-				case DataType::Int: type = GL_INT;		break;
-				case DataType::Int2: type = GL_INT;		break;
-				case DataType::Int3: type = GL_INT;		break;
-				// Add more cases for other data types
-			}
-
-			glVertexAttribPointer(
-				i, 
-				element.count, 
-				type, 
-				element.normalized ? GL_TRUE : GL_FALSE, 
-				layout.GetStride(), 
-				(const void*)offset
-			);
-
-			offset += element.typeSize * element.count;
-			i++;
-		}
+		_vertexArray->AddVertexBuffer(_vertexBuffer);
 
 		unsigned int indices[3] = { 0, 1, 2 };
 		_indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(unsigned int)));
+		_vertexArray->SetIndexBuffer(_indexBuffer);
 
 		const char* vertexShaderSource = R"(
 			#version 330 core
@@ -168,8 +143,8 @@ namespace engine {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		_shader->Bind();
-		glBindVertexArray(_vao);
-		glDrawElements(GL_TRIANGLES, _indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+		_vertexArray->Bind();
+		glDrawElements(GL_TRIANGLES, _vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 		_layerGroup->Render();
 
