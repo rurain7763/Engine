@@ -41,7 +41,7 @@ namespace engine {
 #endif
 
 #ifdef DEBUG
-    #define EG_ASSERT(x, fmt, ...) if(!(x)) { EG_LOG_FATAL(fmt, __VA_ARGS__); __debugbreak(); }
+    #define EG_ASSERT(x, fmt, ...) if(!(x)) { EG_LOG_FATAL("Assertion failure : " fmt, __VA_ARGS__); __debugbreak(); }
 #elif RELEASE
     #define EG_ASSERT(x, ...) x
 #endif

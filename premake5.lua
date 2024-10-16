@@ -6,8 +6,7 @@ workspace "Engine"
     }
 
     includedirs {
-        "./engine/src/core",
-        "./vendor"
+        "./engine/src/core"
     }
 
     startproject "sandbox"
@@ -23,6 +22,7 @@ project "engine"
     includedirs {
         "./engine/vendors/glm/glm/**.hpp",
         "./engine/vendors/GLFW/include",
+        "./engine/vendors/glad/include",
         "./engine/vendors/imgui",
         "./engine/vendors/imgui/backends",
         "./engine/vendors/spdlog/include"
@@ -31,6 +31,7 @@ project "engine"
     files {
         "./engine/src/**.h",
         "./engine/src/**.cpp",
+        "./engine/vendors/glad/src/glad.c",
         "./engine/vendors/imgui/*.h",
         "./engine/vendors/imgui/*.cpp",
         "./engine/vendors/imgui/backends/imgui_impl_glfw.*",

@@ -28,6 +28,9 @@ namespace engine {
 
         std::unique_ptr<EventBus> _eventBus;
         std::unique_ptr<LayerGroup> _layerGroup;
+
+        unsigned int _vao, _vbo, _ebo;
+        std::unique_ptr<class Shader> _shader;
     }; 
 }
 
