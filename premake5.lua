@@ -53,6 +53,7 @@ project "engine"
 
         links {
             "glfw3",
+            "opengl32",
             "OpenGL.framework",
             "Cocoa.framework",
             "IOkit.framework"
@@ -112,6 +113,17 @@ project "sandbox"
     filter "system:macosx"
         defines  {
             "PLATFORM_MAC"
+        }
+
+        libdirs {
+            "./engine/vendors/GLFW/lib-arm64"
+        }    
+
+        links {
+            "glfw3",
+            "OpenGL.framework",
+            "Cocoa.framework",
+            "IOkit.framework"
         }
 
     filter "system:windows"

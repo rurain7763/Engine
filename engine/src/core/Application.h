@@ -2,16 +2,9 @@
 #define APPLICATION_H
 
 #include "EngineHeader.h"
-#include "DisplayWindow.h"
 
 #include "events/WindowClosedEvent.h"
 #include "events/WindowResizedEvent.h"
-#include "events/KeyPressedEvent.h"
-#include "events/KeyReleasedEvent.h"
-#include "events/MouseButtonPressedEvent.h"
-#include "events/MouseButtonReleasedEvent.h"
-#include "events/MouseMovedEvent.h"
-#include "events/MouseScrolledEvent.h"
 
 namespace engine {
     class EG_API Application {
@@ -30,7 +23,7 @@ namespace engine {
     private:
         bool _running;
 
-        std::shared_ptr<DisplayWindow> _window;
+        std::shared_ptr<class DisplayWindow> _window;
     };
 };
 
