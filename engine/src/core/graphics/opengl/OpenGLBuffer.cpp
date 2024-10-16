@@ -21,6 +21,14 @@ namespace engine {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	void OpenGLVertexBuffer::SetLayout(const VertexBufferLayout& layout) {
+		_layout = layout;
+	}
+
+	const VertexBufferLayout& OpenGLVertexBuffer::GetLayoutGroup() const {
+		return _layout;
+	}
+
 	OpenGLIndexBuffer::OpenGLIndexBuffer(unsigned int* indices, unsigned int count)
 		: _count(count) {
 		glGenBuffers(1, &_id);

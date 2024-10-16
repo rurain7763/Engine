@@ -12,8 +12,12 @@ namespace engine {
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
+		virtual void SetLayout(const VertexBufferLayout& layout) override;
+		virtual const VertexBufferLayout& GetLayoutGroup() const override;
+
 	private:
 		unsigned int _id;
+		VertexBufferLayout _layout;
 	};
 
 	class OpenGLIndexBuffer : public IndexBuffer {

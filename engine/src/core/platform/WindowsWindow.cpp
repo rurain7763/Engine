@@ -90,16 +90,46 @@ namespace engine {
 		glGenVertexArrays(1, &_vao);
 		glBindVertexArray(_vao);
 
-		float vertices[3 * 3] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.0f,  0.5f, 0.0f
+		float vertices[] = {
+			-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+			 0.0f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f
 		};
 
 		_vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices) / sizeof(float)));
 
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		VertexBufferLayout layout;
+		layout.Push<float>("aPos", 3);
+		layout.Push<float>("aColor", 4);
+
+		_vertexBuffer->SetLayout(layout);
+
+		int i = 0;
+		int offset = 0;
+		for (const auto& element : _vertexBuffer->GetLayoutGroup()) {
+			glEnableVertexAttribArray(i);
+
+			GLenum type = GL_FLOAT;
+			switch (element.type) {
+				case DataType::Float: type = GL_FLOAT;	break;
+				case DataType::Int: type = GL_INT;		break;
+				case DataType::Int2: type = GL_INT;		break;
+				case DataType::Int3: type = GL_INT;		break;
+				// Add more cases for other data types
+			}
+
+			glVertexAttribPointer(
+				i, 
+				element.count, 
+				type, 
+				element.normalized ? GL_TRUE : GL_FALSE, 
+				layout.GetStride(), 
+				(const void*)offset
+			);
+
+			offset += element.typeSize * element.count;
+			i++;
+		}
 
 		unsigned int indices[3] = { 0, 1, 2 };
 		_indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(unsigned int)));
@@ -108,9 +138,14 @@ namespace engine {
 			#version 330 core
 
 			layout(location = 0) in vec3 aPos;
+			layout(location = 1) in vec4 aColor;
+			layout(location = 2) in vec2 aTexCoord;
+
+			out vec4 vertexColor;
 
 			void main() {
 				gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+				vertexColor = aColor;
 			}
 		)";
 
@@ -119,8 +154,10 @@ namespace engine {
 
 			out vec4 FragColor;
 
+			in vec4 vertexColor;
+
 			void main() {
-				FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+				FragColor = vec4(vertexColor);
 			}
 		)";
 
