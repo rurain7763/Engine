@@ -12,8 +12,9 @@
 #include "../events/MouseScrolledEvent.h"
 
 #include "../layers/ImGuiLayer.h"
-#include "graphics/opengl/OpenGLContext.h"
+#include "graphics/GraphicsContext.h"
 #include "graphics/Shader.h"
+#include "graphics/Buffer.h"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -24,15 +25,13 @@ namespace engine {
 		_layerGroup = std::make_unique<LayerGroup>();
 	}
 
-	GLuint vao;
-
 	void DisplayWindow::Init(int width, int height, const char* title) {
 		EG_ASSERT(glfwInit() == GLFW_TRUE, "Failed to initialize GLFW");
 
 		GLFWwindow* window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 		EG_ASSERT(window != nullptr, "Failed to create window");
 
-		_graphicsContext = new OpenGLContext(window);
+		_graphicsContext = GraphicsContext::Create(GraphicsAPI::OpenGL, window);
 		_graphicsContext->Init();
 
 		glfwMakeContextCurrent(window);
@@ -88,12 +87,8 @@ namespace engine {
 		});
 
 		
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
-
-		GLuint vbo;
-		glGenBuffers(1, &vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glGenVertexArrays(1, &_vao);
+		glBindVertexArray(_vao);
 
 		float vertices[3 * 3] = {
 			-0.5f, -0.5f, 0.0f,
@@ -101,10 +96,13 @@ namespace engine {
 			 0.0f,  0.5f, 0.0f
 		};
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		_vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices) / sizeof(float)));
 
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+		unsigned int indices[3] = { 0, 1, 2 };
+		_indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(unsigned int)));
 
 		const char* vertexShaderSource = R"(
 			#version 330 core
@@ -127,21 +125,14 @@ namespace engine {
 		)";
 
 		_shader = std::make_unique<Shader>(vertexShaderSource, fragmentShaderSource);
-
-		GLuint ibo;
-		glGenBuffers(1, &ibo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-
-		unsigned int indices[3] = { 0, 1, 2 };
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	}
 
 	void DisplayWindow::Render() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		_shader->Bind();
-		glBindVertexArray(vao);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindVertexArray(_vao);
+		glDrawElements(GL_TRIANGLES, _indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 		_layerGroup->Render();
 
