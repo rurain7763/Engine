@@ -10,3 +10,6 @@ bin/
 bin_obj/
 *.make
 Makefile
+
+imgui.ini
+./sandbox/imgui.ini
