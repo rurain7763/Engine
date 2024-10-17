@@ -4,6 +4,7 @@
 #include "Logger.h"
 #include "input/Input.h"
 #include "input/KeyCodes.h"
+#include "utils/Timestep.h"
 
 #include "eventbus/EventBus.h"
 #include "events/WindowClosedEvent.h"
@@ -13,6 +14,8 @@
 #include "layers/ImGuiLayer.h"
 
 #include "graphics/GraphicsContext.h"
+
+#include "GLFW/glfw3.h"
 
 namespace engine {
     Application::Application() {
@@ -34,14 +37,19 @@ namespace engine {
 
     void Application::Run() {
         _running = true;
+        _lastFrameTime = 0.0f;
 
         for(auto itr = _layerGroup->begin(); itr != _layerGroup->end(); itr++) {
             (*itr)->OnAttach(*this);
         }
 
         while(_running) {
+            float currTime = static_cast<float>(glfwGetTime());
+            Timestep deltaTime = currTime - _lastFrameTime;
+            _lastFrameTime = currTime;
+
             for(auto itr = _layerGroup->begin(); itr != _layerGroup->end(); itr++) {
-                (*itr)->OnUpdate();
+                (*itr)->OnUpdate(deltaTime);
             }
             _graphicsContext->SwapBuffers();
             _window->Update();

@@ -12,7 +12,7 @@ namespace engine {
 
 		virtual void OnAttach(class Application& app) override;
 		virtual void OnDetach() override;
-		virtual void OnUpdate() override;
+		virtual void OnUpdate(Timestep deltaTime) override;
 
 	private:
 		void* _nativeWindow;

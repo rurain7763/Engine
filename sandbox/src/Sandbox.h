@@ -75,19 +75,21 @@ public:
         _camera.reset();
     }
 
-    virtual void OnUpdate() override {
+    virtual void OnUpdate(engine::Timestep deltaTime) override {
+        LOG_INFO("%fs (%fms)", deltaTime.GetAsSeconds(), deltaTime.GetAsMilliseconds());
+
         glm::vec3 cameraPosition = _camera->GetPosition();
 
         if(engine::Input::IsKeyPressed(EG_KEY_RIGHT)) {
-            _camera->SetPosition(cameraPosition.x + 1, cameraPosition.y, cameraPosition.z);
+            _camera->SetPosition(cameraPosition.x + 100.f * deltaTime, cameraPosition.y, cameraPosition.z);
         } else if(engine::Input::IsKeyPressed(EG_KEY_LEFT)) {
-            _camera->SetPosition(cameraPosition.x - 1, cameraPosition.y, cameraPosition.z);
+            _camera->SetPosition(cameraPosition.x - 100.f * deltaTime, cameraPosition.y, cameraPosition.z);
         }
 
         if(engine::Input::IsKeyPressed(EG_KEY_UP)) {
-            _camera->SetPosition(cameraPosition.x, cameraPosition.y + 1, cameraPosition.z);
+            _camera->SetPosition(cameraPosition.x, cameraPosition.y + 100.f * deltaTime, cameraPosition.z);
         } else if(engine::Input::IsKeyPressed(EG_KEY_DOWN)) {
-            _camera->SetPosition(cameraPosition.x, cameraPosition.y - 1, cameraPosition.z);
+            _camera->SetPosition(cameraPosition.x, cameraPosition.y - 100.f * deltaTime, cameraPosition.z);
         }
 
         auto& renderer = _graphicsContext->GetRenderer();

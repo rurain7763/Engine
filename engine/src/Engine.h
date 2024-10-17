@@ -33,4 +33,9 @@
 #include "graphics/RenderCommand.h"
 #include "graphics/OrthographicCamera.h"
 
+// ========================
+// Utils
+// ========================
+#include "utils/Timestep.h"
+
 #endif // ENGINE_H

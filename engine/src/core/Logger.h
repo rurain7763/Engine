@@ -28,11 +28,11 @@ namespace engine {
 #define EG_LOG_ERROR(fmt, ...) Logger::EGError(fmt, ##__VA_ARGS__)
 #define EG_LOG_FATAL(fmt, ...) Logger::EGFatal(fmt, ##__VA_ARGS__)
 
-#define LOG_TRACE(fmt, ...) Logger::AppTrace(fmt, ##__VA_ARGS__)
-#define LOG_INFO(fmt, ...) Logger::AppInfo(fmt, ##__VA_ARGS__)
-#define LOG_WARN(fmt, ...) Logger::AppWarn(fmt, ##__VA_ARGS__)
-#define LOG_ERROR(fmt, ...) Logger::AppError(fmt, ##__VA_ARGS__)
-#define LOG_FATAL(fmt, ...) Logger::AppFatal(fmt, ##__VA_ARGS__)
+#define LOG_TRACE(fmt, ...) engine::Logger::AppTrace(fmt, ##__VA_ARGS__)
+#define LOG_INFO(fmt, ...) engine::Logger::AppInfo(fmt, ##__VA_ARGS__)
+#define LOG_WARN(fmt, ...) engine::Logger::AppWarn(fmt, ##__VA_ARGS__)
+#define LOG_ERROR(fmt, ...) engine::Logger::AppError(fmt, ##__VA_ARGS__)
+#define LOG_FATAL(fmt, ...) engine::Logger::AppFatal(fmt, ##__VA_ARGS__)
 
 #ifdef PLATFORM_MAC
     #define __debugbreak() __builtin_trap()

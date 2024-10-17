@@ -2,6 +2,7 @@
 #define LAYER_H
 
 #include "EngineHeader.h"
+#include "utils/Timestep.h"
 
 const int LAYER_ORDER_MAX = 1000;
 
@@ -19,7 +20,7 @@ namespace engine {
         virtual ~Layer() = default;
 
         virtual void OnAttach(class Application& app) = 0;
-        virtual void OnUpdate() = 0;
+        virtual void OnUpdate(Timestep deltaTime) = 0;
         virtual void OnDetach() = 0;
         
         inline const std::string& GetName() const { return _name; }
