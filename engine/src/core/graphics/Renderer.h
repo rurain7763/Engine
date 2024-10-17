@@ -18,7 +18,7 @@ namespace engine {
         void BeginScene(class OrthographicCamera& camera);
         void EndScene();
 
-        void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray);
+        void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
 
     private:
         RenderCommand* _renderCommand;

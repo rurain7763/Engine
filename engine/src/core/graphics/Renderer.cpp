@@ -16,9 +16,10 @@ namespace engine {
         // TODO: batch rendering, etc.
     }
 
-    void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray) {
+    void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transform) {
         shader->Bind();
         shader->SetUniformMat4("u_viewProjection", _viewProjectionMatrix);
+        shader->SetUniformMat4("u_transform", transform);
 
         _renderCommand->DrawIndexed(vertexArray);
     }
