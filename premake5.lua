@@ -20,7 +20,7 @@ project "engine"
     objdir "bin_obj/%{cfg.buildcfg}/%{cfg.architecture}/engine"
 
     includedirs {
-        "./engine/vendors/glm/glm/**.hpp",
+        "./engine/vendors/glm",
         "./engine/vendors/GLFW/include",
         "./engine/vendors/glad/include",
         "./engine/vendors/imgui",

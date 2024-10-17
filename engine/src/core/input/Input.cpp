@@ -2,6 +2,14 @@
 
 #include "../DisplayWindow.h"
 
+#include "../eventbus/EventBus.h"
+#include "events/KeyPressedEvent.h"
+#include "events/KeyReleasedEvent.h"
+#include "events/MouseButtonPressedEvent.h"
+#include "events/MouseButtonReleasedEvent.h"
+#include "events/MouseMovedEvent.h"
+#include "events/MouseScrolledEvent.h"
+
 namespace engine {
 	Input* Input::s_instance = nullptr;
 

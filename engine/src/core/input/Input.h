@@ -3,13 +3,6 @@
 
 #include "EngineHeader.h"
 
-#include "events/KeyPressedEvent.h"
-#include "events/KeyReleasedEvent.h"
-#include "events/MouseButtonPressedEvent.h"
-#include "events/MouseButtonReleasedEvent.h"
-#include "events/MouseMovedEvent.h"
-#include "events/MouseScrolledEvent.h"
-
 namespace engine {
 	class EG_API Input {
 	public:
@@ -24,13 +17,13 @@ namespace engine {
 		static double GetMouseScrollY();
 
 	private:
-		void OnKeyPressed(KeyPressedEvent& event);
-		void OnKeyReleased(KeyReleasedEvent& event);
+		void OnKeyPressed(class KeyPressedEvent& event);
+		void OnKeyReleased(class KeyReleasedEvent& event);
 
-		void OnMouseButtonPressed(MouseButtonPressedEvent& event);
-		void OnMouseButtonReleased(MouseButtonReleasedEvent& event);
-		void OnMouseMoved(MouseMovedEvent& event);
-		void OnMouseScrolled(MouseScrolledEvent& event);
+		void OnMouseButtonPressed(class MouseButtonPressedEvent& event);
+		void OnMouseButtonReleased(class MouseButtonReleasedEvent& event);
+		void OnMouseMoved(class MouseMovedEvent& event);
+		void OnMouseScrolled(class MouseScrolledEvent& event);
 
 	private:
 		static Input* s_instance;

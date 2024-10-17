@@ -3,27 +3,33 @@
 
 #include "EngineHeader.h"
 
-#include "events/WindowClosedEvent.h"
-#include "events/WindowResizedEvent.h"
-
 namespace engine {
     class EG_API Application {
     public:
         Application();
-        virtual ~Application();
+        virtual ~Application() = default;
 
         void Init();
         void Run();
         void Shutdown();
 
     private:
-        void OnWindowClosed(WindowClosedEvent& event);
-        void OnWindowResize(WindowResizedEvent& event);
+        void OnWindowClosed(class WindowClosedEvent& event);
+        void OnWindowResize(class WindowResizedEvent& event);
 
     private:
         bool _running;
 
         std::shared_ptr<class DisplayWindow> _window;
+        std::shared_ptr<class GraphicsContext> _graphicsContext;
+
+        std::shared_ptr<class LayerGroup> _layerGroup;
+
+        std::shared_ptr<class VertexArray> _vertexArray;
+        std::shared_ptr<class VertexBuffer> _vertexBuffer;
+        std::shared_ptr<class IndexBuffer> _indexBuffer;
+        std::shared_ptr<class Shader> _shader;
+        std::shared_ptr<class OrthographicCamera> _camera;
     };
 };
 

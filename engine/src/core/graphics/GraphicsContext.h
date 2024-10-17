@@ -17,7 +17,7 @@ namespace engine {
 		virtual std::shared_ptr<class RenderCommand>& GetRenderCommand() = 0;
 		virtual std::shared_ptr<class GraphicsAPI>& GetAPI() = 0;
 
-		static GraphicsContext* Create(GraphicsAPI::Type api, void* nativeWindow);
+		static GraphicsContext* Create(GraphicsAPI::Type api, class DisplayWindow* window);
 	};
 }
 
