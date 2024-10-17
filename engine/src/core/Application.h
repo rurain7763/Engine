@@ -4,14 +4,21 @@
 #include "EngineHeader.h"
 
 namespace engine {
+    class DisplayWindow;
+    class GraphicsContext;
+    class LayerGroup;
+
     class EG_API Application {
     public:
         Application();
         virtual ~Application() = default;
 
-        void Init();
         void Run();
         void Shutdown();
+
+        inline std::shared_ptr<DisplayWindow> GetWindow() const { return _window; }
+        inline std::shared_ptr<GraphicsContext> GetGraphicsContext() const { return _graphicsContext; }
+        inline std::shared_ptr<LayerGroup> GetLayerGroup() const { return _layerGroup; }
 
     private:
         void OnWindowClosed(class WindowClosedEvent& event);
@@ -20,16 +27,10 @@ namespace engine {
     private:
         bool _running;
 
-        std::shared_ptr<class DisplayWindow> _window;
-        std::shared_ptr<class GraphicsContext> _graphicsContext;
+        std::shared_ptr<DisplayWindow> _window;
+        std::shared_ptr<GraphicsContext> _graphicsContext;
 
-        std::shared_ptr<class LayerGroup> _layerGroup;
-
-        std::shared_ptr<class VertexArray> _vertexArray;
-        std::shared_ptr<class VertexBuffer> _vertexBuffer;
-        std::shared_ptr<class IndexBuffer> _indexBuffer;
-        std::shared_ptr<class Shader> _shader;
-        std::shared_ptr<class OrthographicCamera> _camera;
+        std::shared_ptr<LayerGroup> _layerGroup;
     };
 };
 

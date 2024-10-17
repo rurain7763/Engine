@@ -98,7 +98,8 @@ project "sandbox"
     
     includedirs {
         "./engine/src",
-        "./engine/src/core"
+        "./engine/src/core",
+        "./engine/vendors/glm"
     }
     
     files {

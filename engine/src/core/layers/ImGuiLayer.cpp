@@ -1,5 +1,6 @@
 #include "ImGuiLayer.h"
 #include "../DisplayWindow.h"
+#include "../Application.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -8,13 +9,11 @@
 #include "GLFW/glfw3.h"
 
 namespace engine {
-	ImGuiLayer::ImGuiLayer(DisplayWindow* window)
-		: Layer("ImGuiLayer", LAYER_ORDER_MAX)
-	{
-		_nativeWindow = window->GetNativeWindow();
-	}
+	ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer", LAYER_ORDER_MAX) { }
 
-	void ImGuiLayer::OnAttach() {
+	void ImGuiLayer::OnAttach(Application& app) {
+		_nativeWindow = app.GetWindow()->GetNativeWindow();
+
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 
@@ -27,8 +26,7 @@ namespace engine {
 		ImGui::StyleColorsDark();
 
 		ImGuiStyle& style = ImGui::GetStyle();
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 			style.WindowRounding = 0.0f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
@@ -43,7 +41,7 @@ namespace engine {
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::OnRender() {
+	void ImGuiLayer::OnUpdate() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -55,8 +53,7 @@ namespace engine {
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 			GLFWwindow* backup_current_context = glfwGetCurrentContext();
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();

@@ -16,19 +16,11 @@ namespace engine {
 		_idToIndex.erase(pair);
 		_layers.pop_back();
 
-		layer->OnDetach();
 		delete layer;
-	}
-
-	void LayerGroup::Render() {
-		for(auto& layer : _layers) {
-			layer->OnRender();
-		}
 	}
 
 	void LayerGroup::Destroy() {
 		for(auto& layer : _layers) {
-			layer->OnDetach();
 			delete layer;
 		}
 		_layers.clear();

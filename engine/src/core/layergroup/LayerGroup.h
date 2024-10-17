@@ -27,12 +27,15 @@ namespace engine {
 					break;
 				}
 			}
-			layer->OnAttach();
 			return id;
 		}
 		void RemoveLayer(int id);
-		void Render();
 		void Destroy();
+
+		std::vector<Layer*>::iterator begin() { return _layers.begin(); }
+		std::vector<Layer*>::iterator end() { return _layers.end(); }
+		std::vector<Layer*>::const_iterator begin() const { return _layers.begin(); }
+		std::vector<Layer*>::const_iterator end() const { return _layers.end(); }
 
 	private:
 		void SwapLayers(int index1, int index2);

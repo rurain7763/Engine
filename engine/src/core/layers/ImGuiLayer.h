@@ -7,12 +7,12 @@
 namespace engine {
 	class ImGuiLayer : public Layer {
 	public:
-		ImGuiLayer(class DisplayWindow* window);
+		ImGuiLayer();
 		~ImGuiLayer() override = default;
 
-		void OnAttach() override;
-		void OnDetach() override;
-		void OnRender() override;
+		virtual void OnAttach(class Application& app) override;
+		virtual void OnDetach() override;
+		virtual void OnUpdate() override;
 
 	private:
 		void* _nativeWindow;
