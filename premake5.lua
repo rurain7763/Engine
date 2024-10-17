@@ -5,10 +5,6 @@ workspace "Engine"
         "Release"
     }
 
-    includedirs {
-        "./engine/src/core"
-    }
-
     startproject "sandbox"
 
 project "engine"
@@ -20,6 +16,7 @@ project "engine"
     objdir "bin_obj/%{cfg.buildcfg}/%{cfg.architecture}/engine"
 
     includedirs {
+        "./engine/src/core",
         "./engine/vendors/glm",
         "./engine/vendors/GLFW/include",
         "./engine/vendors/glad/include",
@@ -32,10 +29,9 @@ project "engine"
         "./engine/src/**.h",
         "./engine/src/**.cpp",
         "./engine/vendors/glad/src/glad.c",
-        "./engine/vendors/imgui/*.h",
         "./engine/vendors/imgui/*.cpp",
-        "./engine/vendors/imgui/backends/imgui_impl_glfw.*",
-        "./engine/vendors/imgui/backends/imgui_impl_opengl3.*"
+        "./engine/vendors/imgui/backends/imgui_impl_glfw.cpp",
+        "./engine/vendors/imgui/backends/imgui_impl_opengl3.cpp"
     }
 
     defines {
@@ -99,7 +95,8 @@ project "sandbox"
     includedirs {
         "./engine/src",
         "./engine/src/core",
-        "./engine/vendors/glm"
+        "./engine/vendors/glm",
+        "./engine/vendors/imgui"
     }
     
     files {

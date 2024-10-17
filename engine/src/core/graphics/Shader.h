@@ -8,16 +8,13 @@
 namespace engine {
 	class Shader {
 	public:
-		Shader(const std::string& vertexSource, const std::string& fragmentSource);
+		Shader() = default;
 		virtual ~Shader() = default;
 
-		void Bind() const;
-		void Unbind() const;
+		virtual void Bind() const = 0;
+		virtual void Unbind() const = 0;
 
-		void SetUniformMat4(const std::string& name, const glm::mat4& matrix);
-
-	private:
-		unsigned int _id;
+		static Shader* Create(class GraphicsContext* context, const std::string& vertexSource, const std::string& fragmentSource);
 	};
 }
 

@@ -32,7 +32,7 @@ namespace engine {
         Input::Init(_window.get());
 
         _layerGroup = std::make_shared<LayerGroup>();
-        _layerGroup->AddLayer<ImGuiLayer>();
+        _imGuiLayerID = _layerGroup->AddLayer<ImGuiLayer>();
     }
 
     void Application::Run() {
@@ -48,9 +48,14 @@ namespace engine {
             Timestep deltaTime = currTime - _lastFrameTime;
             _lastFrameTime = currTime;
 
+            ImGuiLayer* imGuiLayer = _layerGroup->GetLayer<ImGuiLayer>(_imGuiLayerID);
+
+            imGuiLayer->Begin();
             for(auto itr = _layerGroup->begin(); itr != _layerGroup->end(); itr++) {
                 (*itr)->OnUpdate(deltaTime);
             }
+            imGuiLayer->End();
+
             _graphicsContext->SwapBuffers();
             _window->Update();
         }

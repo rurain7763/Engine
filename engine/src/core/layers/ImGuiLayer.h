@@ -14,6 +14,9 @@ namespace engine {
 		virtual void OnDetach() override;
 		virtual void OnUpdate(Timestep deltaTime) override;
 
+		void Begin();
+		void End();
+
 	private:
 		void* _nativeWindow;
 	};

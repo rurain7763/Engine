@@ -31,6 +31,7 @@ namespace engine {
         std::shared_ptr<GraphicsContext> _graphicsContext;
 
         std::shared_ptr<LayerGroup> _layerGroup;
+        int _imGuiLayerID;
 
         float _lastFrameTime;
     };

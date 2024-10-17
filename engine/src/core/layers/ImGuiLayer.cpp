@@ -41,14 +41,13 @@ namespace engine {
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::OnUpdate(Timestep deltaTime) {
+	void ImGuiLayer::Begin() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+	}
 
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
-
+	void ImGuiLayer::End() {
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -59,5 +58,10 @@ namespace engine {
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backup_current_context);
 		}
+	}
+
+	void ImGuiLayer::OnUpdate(Timestep deltaTime) {
+		static bool show = true;
+		ImGui::ShowDemoWindow(&show);	
 	}
 }

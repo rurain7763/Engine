@@ -29,6 +29,15 @@ namespace engine {
 			}
 			return id;
 		}
+
+		template<typename T>
+		T* GetLayer(int id) {
+			if (_idToIndex.find(id) == _idToIndex.end()) {
+				return nullptr;
+			}
+			return static_cast<T*>(_layers[_idToIndex[id]]);
+		}
+
 		void RemoveLayer(int id);
 		void Destroy();
 
