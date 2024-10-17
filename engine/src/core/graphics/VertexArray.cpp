@@ -5,8 +5,8 @@
 #include "opengl/OpenGLVertexArray.h"
 
 namespace engine {
-	VertexArray* VertexArray::Create() {
-		switch (GraphicsContext::GetAPI()) {
+	VertexArray* VertexArray::Create(GraphicsContext* context) {
+		switch (context->GetAPI()->GetType()) {
 			case GraphicsAPI::OpenGL: return new OpenGLVertexArray();
 		}
 

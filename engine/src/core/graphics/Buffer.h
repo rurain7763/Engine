@@ -5,6 +5,8 @@
 #include <string>
 
 namespace engine {
+    class GraphicsContext;
+
     enum DataType {
         Float, Float2, Float3, Float4,
         Mat3, Mat4,
@@ -65,20 +67,20 @@ namespace engine {
         virtual void SetLayout(const VertexBufferLayout& layout) = 0;
         virtual const VertexBufferLayout& GetLayout() const = 0;
 
-		static VertexBuffer* Create(float* vertices, unsigned int count);
+		static VertexBuffer* Create(GraphicsContext* context, const float* vertices, unsigned int count);
 	};
 
 	class IndexBuffer {
 	public:
 		virtual ~IndexBuffer() = default;
 
-        virtual void SetData(unsigned int* indices, unsigned int count) = 0;
+        virtual void SetData(const unsigned int* indices, unsigned int count) = 0;
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 		virtual unsigned int GetCount() const = 0;
 
-		static IndexBuffer* Create(unsigned int* indices, unsigned int count);
+		static IndexBuffer* Create(GraphicsContext* context, const unsigned int* indices, unsigned int count);
 	};
 }	
 

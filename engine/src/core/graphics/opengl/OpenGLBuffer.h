@@ -27,7 +27,7 @@ namespace engine {
 		OpenGLIndexBuffer();
 		virtual ~OpenGLIndexBuffer();
 
-		virtual void SetData(unsigned int* indices, unsigned int count) override;
+		virtual void SetData(const unsigned int* indices, unsigned int count) override;
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;

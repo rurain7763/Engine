@@ -4,6 +4,7 @@
 #include "EngineHeader.h"
 
 namespace engine {
+	class GraphicsContext;
 	class VertexBuffer;
 	class IndexBuffer;
 
@@ -20,7 +21,7 @@ namespace engine {
 
 		virtual const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const = 0;
 
-		static VertexArray* Create();
+		static VertexArray* Create(GraphicsContext* context);
 	};
 }
 

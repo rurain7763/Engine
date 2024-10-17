@@ -41,7 +41,7 @@ namespace engine {
 		glDeleteBuffers(1, &_id);
 	}
 
-	void OpenGLIndexBuffer::SetData(unsigned int* indices, unsigned int count) {
+	void OpenGLIndexBuffer::SetData(const unsigned int* indices, unsigned int count) {
 		_count = count;
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _id);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * count, indices, GL_STATIC_DRAW);

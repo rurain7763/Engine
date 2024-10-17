@@ -16,8 +16,9 @@
 #include "graphics/Shader.h"
 #include "graphics/Buffer.h"
 #include "graphics/VertexArray.h"
+#include "graphics/Renderer.h"
+#include "graphics/RenderCommand.h"
 
-#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 namespace engine {
@@ -38,14 +39,10 @@ namespace engine {
 		GLFWwindow* window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 		EG_ASSERT(window != nullptr, "Failed to create window");
 
-		_graphicsContext = GraphicsContext::Create(GraphicsAPI::OpenGL, window);
+		_graphicsContext.reset(GraphicsContext::Create(GraphicsAPI::OpenGL, window));
 		_graphicsContext->Init();
 
 		glfwMakeContextCurrent(window);
-
-		_window = window;
-		_width = width;
-		_height = height;
 
 		glfwSetWindowUserPointer(window, this);
 
@@ -92,8 +89,12 @@ namespace engine {
 			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
 			displayWindow->GetEventBus()->Publish<MouseScrolledEvent>(xoffset, yoffset);
 		});
+
+		_window = window;
+		_width = width;
+		_height = height;
 	
-		_vertexArray.reset(VertexArray::Create());
+		_vertexArray.reset(VertexArray::Create(_graphicsContext.get()));
 		_vertexArray->Bind();
 
 		float vertices[] = {
@@ -102,7 +103,7 @@ namespace engine {
 			 0.0f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f
 		};
 
-		_vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices) / sizeof(float)));
+		_vertexBuffer.reset(VertexBuffer::Create(_graphicsContext.get(), vertices, sizeof(vertices) / sizeof(float)));
 
 		VertexBufferLayout layout;
 		layout.Push<float>("aPos", 3);
@@ -112,7 +113,7 @@ namespace engine {
 		_vertexArray->AddVertexBuffer(_vertexBuffer);
 
 		unsigned int indices[3] = { 0, 1, 2 };
-		_indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(unsigned int)));
+		_indexBuffer.reset(IndexBuffer::Create(_graphicsContext.get(), indices, sizeof(indices) / sizeof(unsigned int)));
 		_vertexArray->SetIndexBuffer(_indexBuffer);
 
 		const char* vertexShaderSource = R"(
@@ -146,11 +147,18 @@ namespace engine {
 	}
 
 	void DisplayWindow::Render() {
-		glClear(GL_COLOR_BUFFER_BIT);
+		auto& renderer = _graphicsContext->GetRenderer();
+		auto& renderCommand = _graphicsContext->GetRenderCommand();
+
+		renderCommand->SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		renderCommand->Clear();
+
+		renderer->BeginScene();
 
 		_shader->Bind();
-		_vertexArray->Bind();
-		glDrawElements(GL_TRIANGLES, _vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		renderer->Submit(_vertexArray);
+		
+		renderer->EndScene();
 
 		_layerGroup->Render();
 
@@ -161,7 +169,6 @@ namespace engine {
 	void DisplayWindow::Destroy() {
 		GLFWwindow* window = (GLFWwindow*)_window;
 
-		delete _graphicsContext;
 		glfwDestroyWindow(window);
 		glfwTerminate();
 	}
