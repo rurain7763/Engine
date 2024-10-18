@@ -29,9 +29,10 @@ project "engine"
         "./engine/src/**.h",
         "./engine/src/**.cpp",
         "./engine/vendors/glad/src/glad.c",
+        "./engine/vendors/imgui/*.h",
         "./engine/vendors/imgui/*.cpp",
-        "./engine/vendors/imgui/backends/imgui_impl_glfw.cpp",
-        "./engine/vendors/imgui/backends/imgui_impl_opengl3.cpp"
+        "./engine/vendors/imgui/backends/imgui_impl_glfw.*",
+        "./engine/vendors/imgui/backends/imgui_impl_opengl3.*"
     }
 
     defines {
