@@ -23,7 +23,20 @@ namespace engine {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        // srcFormat : 텍스쳐 데이터의 포맷
+        // dstFormat : 텍스쳐로 변환될 포맷
+        GLenum srcFormat = 0, dstFormat = 0;
+        if (channels == 4) {
+            srcFormat = GL_RGBA;
+			dstFormat = GL_RGBA;
+		} else if (channels == 3) {
+			srcFormat = GL_RGB;
+			dstFormat = GL_RGB;
+		} else {
+			EG_ASSERT(false, "Unsupported image format");
+        }
+
+        glTexImage2D(GL_TEXTURE_2D, 0, srcFormat, _width, _height, 0, dstFormat, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
         
         stbi_image_free(data);

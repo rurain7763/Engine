@@ -101,7 +101,7 @@ project "engine"
 
 project "sandbox"
     location "sandbox"
-    kind "WindowedApp"
+    kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
     targetdir "bin/%{cfg.buildcfg}/%{cfg.architecture}/sandbox"

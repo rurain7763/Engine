@@ -29,6 +29,7 @@ void ExampleLayer::OnAttach(engine::Application& app) {
     _vertexArray->SetIndexBuffer(_indexBuffer);
 
     _texture.reset(engine::Texture2D::Create("assets/images/dog.png"));
+    _alpahTexture.reset(engine::Texture2D::Create("assets/images/alpha.png"));
     
     const char* vertexShaderSource = R"(
 			#version 330 core
@@ -62,7 +63,7 @@ void ExampleLayer::OnAttach(engine::Application& app) {
             uniform vec3 u_color;
   
 			void main() {
-				FragColor = texture(u_texture, 1.0);
+				FragColor = texture(u_texture, texCoord);
 			}
 		)";
 
@@ -133,6 +134,10 @@ void ExampleLayer::OnUpdate(engine::Timestep deltaTime) {
             glShader->Bind();
             glShader->SetUniformFloat3("u_color", _color);
             _texture->Bind(0);
+            glShader->SetUniformInt("u_texture", 0);
+            engine::Renderer::Submit(_shader, _vertexArray, traslationMat * rotationMat * scaleMat);
+
+            _alpahTexture->Bind(0);
             glShader->SetUniformInt("u_texture", 0);
             engine::Renderer::Submit(_shader, _vertexArray, traslationMat * rotationMat * scaleMat);
         }

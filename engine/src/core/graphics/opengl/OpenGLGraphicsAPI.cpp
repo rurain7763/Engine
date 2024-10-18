@@ -5,6 +5,11 @@
 #include "glad/glad.h"
 
 namespace engine {
+    void OpenGLGraphicsAPI::Init() {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+
     void OpenGLGraphicsAPI::SetClearColor(float r, float g, float b, float a) {
         glClearColor(r, g, b, a);   
     }

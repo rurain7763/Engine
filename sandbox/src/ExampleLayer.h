@@ -19,7 +19,7 @@ private:
     engine::Ref<engine::IndexBuffer> _indexBuffer;
     engine::Ref<engine::Shader> _shader;
     engine::Ref<engine::OrthographicCamera> _camera;
-    engine::Ref<engine::Texture> _texture;
+    engine::Ref<engine::Texture> _texture, _alpahTexture;
 
     glm::vec3 _color;
 };

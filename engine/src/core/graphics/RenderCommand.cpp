@@ -14,6 +14,7 @@ namespace engine {
             case GraphicsType::None: break;
         }
         EG_ASSERT(s_api != nullptr, "Unknown GraphicsAPI");
+        s_api->Init();
         return;
     }
 
