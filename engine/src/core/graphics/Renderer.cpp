@@ -9,9 +9,11 @@
 #include "opengl/OpenGLShader.h"
 
 namespace engine {
+    glm::mat4 Renderer::s_viewProjectionMatrix = glm::mat4(1.0);
+
     void Renderer::BeginScene(OrthographicCamera& camera) {
         // TODO: set camera, light, shader setting etc.
-        _viewProjectionMatrix = camera.GetViewProjectionMatrix();
+        s_viewProjectionMatrix = camera.GetViewProjectionMatrix();
     }
 
     void Renderer::EndScene() {
@@ -23,9 +25,9 @@ namespace engine {
         auto glShader = std::static_pointer_cast<OpenGLShader>(shader);
 
         glShader->Bind();
-        glShader->SetUniformMat4("u_viewProjection", _viewProjectionMatrix);
+        glShader->SetUniformMat4("u_viewProjection", s_viewProjectionMatrix);
         glShader->SetUniformMat4("u_transform", transform);
 
-        _renderCommand->DrawIndexed(vertexArray);
+        RenderCommand::DrawIndexed(vertexArray);
     }
 }

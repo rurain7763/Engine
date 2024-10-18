@@ -1,16 +1,31 @@
 #include "RenderCommand.h"
 #include "GraphicsAPI.h"
+#include "GraphicsContext.h"
+#include "Logger.h"
+
+#include "opengl/OpenGLGraphicsAPI.h"
 
 namespace engine {
+    Ref<GraphicsAPI> RenderCommand::s_api = nullptr;
+
+    void RenderCommand::Init() {
+        switch (GraphicsContext::GetType()) {
+            case GraphicsType::OpenGL: s_api.reset(new OpenGLGraphicsAPI());
+            case GraphicsType::None: break;
+        }
+        EG_ASSERT(s_api != nullptr, "Unknown GraphicsAPI");
+        return;
+    }
+
     void RenderCommand::SetClearColor(float r, float g, float b, float a) {
-        _graphicsAPI->SetClearColor(r, g, b, a);
+        s_api->SetClearColor(r, g, b, a);
     }
 
     void RenderCommand::Clear() {
-        _graphicsAPI->Clear();
+        s_api->Clear();
     }
 
     void RenderCommand::DrawIndexed(const Ref<VertexArray>& vertexArray) {
-        _graphicsAPI->DrawIndexed(vertexArray);
+        s_api->DrawIndexed(vertexArray);
     }
 }

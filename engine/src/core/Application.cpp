@@ -26,7 +26,7 @@ namespace engine {
         _window->GetEventBus()->Subscribe<Application, WindowClosedEvent>(this, &Application::OnWindowClosed);
         _window->GetEventBus()->Subscribe<Application, WindowResizedEvent>(this, &Application::OnWindowResize);
 
-        _graphicsContext.reset(GraphicsContext::Create(GraphicsAPI::Type::OpenGL, _window.get()));
+        _graphicsContext.reset(GraphicsContext::Create(GraphicsType::OpenGL, _window.get()));
         _graphicsContext->Init();
 
         Input::Init(_window.get());

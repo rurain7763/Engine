@@ -4,31 +4,32 @@
 #include "graphics/opengl/OpenGLShader.h"
 
 void ExampleLayer::OnAttach(engine::Application& app) {
-    _graphicsContext = app.GetGraphicsContext();
-
-    _vertexArray.reset(engine::VertexArray::Create(_graphicsContext.get()));
+    _vertexArray.reset(engine::VertexArray::Create());
     _vertexArray->Bind();
 
     float vertices[] = {
-        -0.125f, -0.125f, 0.0f, 0.8f, 0.3f, 0.2f, 1.0f,
-        -0.124f, 0.125f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-        0.125f, -0.125f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f,
-        0.125f, 0.125f, 0.0f, 0.2f, 0.8f, 0.8f, 1.0f
+        -0.125f, -0.125f, 0.0f, 0.8f, 0.3f, 0.2f, 1.0f, 0.f, 0.f,
+        -0.124f, 0.125f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f, 0.f, 1.f,
+        0.125f, -0.125f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f, 1.f, 0.f,
+        0.125f, 0.125f, 0.0f, 0.2f, 0.8f, 0.8f, 1.0f, 1.f, 1.f
     };
 
-    _vertexBuffer.reset(engine::VertexBuffer::Create(_graphicsContext.get(), vertices, sizeof(vertices) / sizeof(float)));
+    _vertexBuffer.reset(engine::VertexBuffer::Create(vertices, sizeof(vertices) / sizeof(float)));
 
     engine::VertexBufferLayout layout;
     layout.Push<float>("aPos", 3);
     layout.Push<float>("aColor", 4);
+    layout.Push<float>("aTexCoord", 2);
 
     _vertexBuffer->SetLayout(layout);
     _vertexArray->AddVertexBuffer(_vertexBuffer);
 
     unsigned int indices[] = { 0, 1, 2, 1, 3, 2 };
-    _indexBuffer.reset(engine::IndexBuffer::Create(_graphicsContext.get(), indices, sizeof(indices) / sizeof(unsigned int)));
+    _indexBuffer.reset(engine::IndexBuffer::Create(indices, sizeof(indices) / sizeof(unsigned int)));
     _vertexArray->SetIndexBuffer(_indexBuffer);
 
+    _texture.reset(engine::Texture2D::Create("assets/images/dog.png"));
+    
     const char* vertexShaderSource = R"(
 			#version 330 core
 
@@ -37,6 +38,7 @@ void ExampleLayer::OnAttach(engine::Application& app) {
 			layout(location = 2) in vec2 aTexCoord;
 
 			out vec4 vertexColor;
+            out vec2 texCoord;
 
             uniform mat4 u_viewProjection;
             uniform mat4 u_transform;
@@ -44,6 +46,7 @@ void ExampleLayer::OnAttach(engine::Application& app) {
 			void main() {
 				gl_Position = u_viewProjection * u_transform * vec4(aPos.x, aPos.y, aPos.z, 1.0);
 				vertexColor = aColor;
+                texCoord = aTexCoord;
 			}
 		)";
 
@@ -53,14 +56,17 @@ void ExampleLayer::OnAttach(engine::Application& app) {
 			out vec4 FragColor;
 
 			in vec4 vertexColor;
+            in vec2 texCoord;
+  
+            uniform sampler2D u_texture;
             uniform vec3 u_color;
-
+  
 			void main() {
-				FragColor = vec4(u_color, 1.0);
+				FragColor = texture(u_texture, 1.0);
 			}
 		)";
 
-    _shader.reset(engine::Shader::Create(_graphicsContext.get(), vertexShaderSource, fragmentShaderSource));
+    _shader.reset(engine::Shader::Create(vertexShaderSource, fragmentShaderSource));
 
     _camera = std::make_shared<engine::OrthographicCamera>();
     _camera->SetProjection(-0.4, 0.4, -0.3, 0.3);
@@ -111,13 +117,10 @@ void ExampleLayer::OnUpdate(engine::Timestep deltaTime) {
         position.x += 0.5f * deltaTime;
     }
 
-    auto& renderer = _graphicsContext->GetRenderer();
-    auto& renderCommand = _graphicsContext->GetRenderCommand();
+    engine::RenderCommand::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    engine::RenderCommand::Clear();
 
-    renderCommand->SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    renderCommand->Clear();
-
-    renderer->BeginScene(*_camera.get());
+    engine::Renderer::BeginScene(*_camera.get());
 
     glm::mat4 rotationMat = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0, 0, 1));
     glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), scale);
@@ -129,12 +132,13 @@ void ExampleLayer::OnUpdate(engine::Timestep deltaTime) {
 
             glShader->Bind();
             glShader->SetUniformFloat3("u_color", _color);
-
-            renderer->Submit(_shader, _vertexArray, traslationMat * rotationMat * scaleMat);
+            _texture->Bind(0);
+            glShader->SetUniformInt("u_texture", 0);
+            engine::Renderer::Submit(_shader, _vertexArray, traslationMat * rotationMat * scaleMat);
         }
     }
 
-    renderer->EndScene();
+    engine::Renderer::EndScene();
 
     ImGui::Begin("Settings");
     ImGui::ColorEdit3("Color", &_color.r);

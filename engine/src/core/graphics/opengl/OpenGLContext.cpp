@@ -18,6 +18,8 @@ namespace engine {
 	void OpenGLContext::Init() {
 		glfwMakeContextCurrent(_nativeWindow);
 		
+        s_type = GraphicsType::OpenGL;
+        
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		EG_ASSERT(status, "Failed to initialize Glad!");
 
@@ -26,9 +28,7 @@ namespace engine {
 		EG_LOG_INFO("  Renderer: %s", glGetString(GL_RENDERER));
 		EG_LOG_INFO("  Version: %s", glGetString(GL_VERSION));
 
-		_graphicsAPI = std::make_shared<OpenGLGraphicsAPI>();
-		_renderCommand = std::make_shared<RenderCommand>(_graphicsAPI.get());
-		_renderer = std::make_shared<Renderer>(_renderCommand.get());
+        RenderCommand::Init();
 	}
 
 	void OpenGLContext::SwapBuffers() {

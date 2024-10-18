@@ -14,13 +14,12 @@ public:
     virtual void OnUpdate(engine::Timestep deltaTime) override;
 
 private:
-    std::shared_ptr<engine::GraphicsContext> _graphicsContext;
-
     engine::Ref<engine::VertexArray> _vertexArray;
     engine::Ref<engine::VertexBuffer> _vertexBuffer;
     engine::Ref<engine::IndexBuffer> _indexBuffer;
     engine::Ref<engine::Shader> _shader;
     engine::Ref<engine::OrthographicCamera> _camera;
+    engine::Ref<engine::Texture> _texture;
 
     glm::vec3 _color;
 };

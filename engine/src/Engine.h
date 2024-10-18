@@ -32,6 +32,7 @@
 #include "graphics/Renderer.h"
 #include "graphics/RenderCommand.h"
 #include "graphics/OrthographicCamera.h"
+#include "graphics/Texture.h"
 
 // ========================
 // Utils

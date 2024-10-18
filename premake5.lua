@@ -22,23 +22,28 @@ project "engine"
         "./engine/vendors/glad/include",
         "./engine/vendors/imgui",
         "./engine/vendors/imgui/backends",
-        "./engine/vendors/spdlog/include"
+        "./engine/vendors/spdlog/include",
+        "./engine/vendors/stb_image",
     }
 
     files {
         "./engine/src/**.h",
         "./engine/src/**.cpp",
-        "./engine/vendors/glad/src/glad.c",
+        "./engine/vendors/spdlog/include/**.h",
+        "./engine/vendors/glad/include/**",
+        "./engine/vendors/glad/src/*.c",
         "./engine/vendors/imgui/*.h",
         "./engine/vendors/imgui/*.cpp",
         "./engine/vendors/imgui/backends/imgui_impl_glfw.*",
-        "./engine/vendors/imgui/backends/imgui_impl_opengl3.*"
+        "./engine/vendors/imgui/backends/imgui_impl_opengl3.*",
+        "./engine/vendors/stb_image/*.h",
+        "./engine/vendors/stb_image/*.cpp"
     }
 
     defines {
         "_CRT_SECURE_NO_WARNINGS"
     }
-    
+
     filter "system:macosx"
         defines  {
             "PLATFORM_MAC"
@@ -54,6 +59,15 @@ project "engine"
             "OpenGL.framework",
             "Cocoa.framework",
             "IOkit.framework"
+        }
+
+    filter "action:xcode4"
+        externalincludedirs {
+            "./engine/vendors/spdlog/include"
+        }
+
+        xcodebuildsettings {
+            ["GENERATE_INFOPLIST_FILE"] = "YES"
         }
 
     filter "system:windows"
@@ -87,7 +101,7 @@ project "engine"
 
 project "sandbox"
     location "sandbox"
-    kind "ConsoleApp"
+    kind "WindowedApp"
     language "C++"
     cppdialect "C++17"
     targetdir "bin/%{cfg.buildcfg}/%{cfg.architecture}/sandbox"

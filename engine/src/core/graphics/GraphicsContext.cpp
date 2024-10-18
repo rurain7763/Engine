@@ -5,11 +5,13 @@
 #include "opengl/OpenGLContext.h"
 
 namespace engine {
-	GraphicsContext* GraphicsContext::Create(GraphicsAPI::Type api, DisplayWindow* window) {
-		switch (api) {
-			case GraphicsAPI::Type::OpenGL: return new OpenGLContext(static_cast<GLFWwindow*>(window->GetNativeWindow()));
-		}
+    GraphicsType GraphicsContext::s_type = GraphicsType::None;
 
+	GraphicsContext* GraphicsContext::Create(GraphicsType type, DisplayWindow* window) {
+		switch (type) {
+			case GraphicsType::OpenGL: return new OpenGLContext(static_cast<GLFWwindow*>(window->GetNativeWindow()));
+            case GraphicsType::None: break;
+		}
 		EG_ASSERT(false, "Unknown GraphicsAPI");
 		return nullptr;
 	}

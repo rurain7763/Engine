@@ -10,7 +10,7 @@ namespace engine {
 		ImGuiLayer();
 		~ImGuiLayer() override = default;
 
-		virtual void OnAttach(class Application& app) override;
+		virtual void OnAttach(class Application& app);
 		virtual void OnDetach() override;
 		virtual void OnUpdate(Timestep deltaTime) override;
 

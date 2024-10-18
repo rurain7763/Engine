@@ -21,7 +21,7 @@ namespace engine {
 
 		virtual const Ref<IndexBuffer>& GetIndexBuffer() const = 0;
 
-		static VertexArray* Create(GraphicsContext* context);
+		static VertexArray* Create();
 	};
 }
 

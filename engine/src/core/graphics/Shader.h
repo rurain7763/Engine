@@ -14,7 +14,7 @@ namespace engine {
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
-		static Shader* Create(class GraphicsContext* context, const std::string& vertexSource, const std::string& fragmentSource);
+		static Shader* Create(const std::string& vertexSource, const std::string& fragmentSource);
 	};
 }
 

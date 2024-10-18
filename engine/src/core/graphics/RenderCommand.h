@@ -4,21 +4,22 @@
 #include "EngineHeader.h"
 
 namespace engine {
-    class GraphicsAPI;
     class VertexArray;
 
     class RenderCommand {
     public:
-        RenderCommand(GraphicsAPI* graphicsAPI) : _graphicsAPI(graphicsAPI) {}
+        RenderCommand() = default;
         ~RenderCommand() = default;
 
-        void SetClearColor(float r, float g, float b, float a);
-        void Clear();
+        static void Init();
+        
+        static void SetClearColor(float r, float g, float b, float a);
+        static void Clear();
 
-        void DrawIndexed(const Ref<VertexArray>& vertexArray);
+        static void DrawIndexed(const Ref<VertexArray>& vertexArray);
 
     private:
-        GraphicsAPI* _graphicsAPI;
+        static Ref<class GraphicsAPI> s_api;
     };
 }
 

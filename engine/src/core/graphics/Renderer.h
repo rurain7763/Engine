@@ -6,24 +6,20 @@
 #include "glm/glm.hpp"
 
 namespace engine {
-    class GraphicsAPI;
     class VertexArray;
-    class RenderCommand;
     class Shader;
 
     class Renderer {
     public:
-        Renderer(RenderCommand* renderCommand) : _renderCommand(renderCommand) {}
-
-        void BeginScene(class OrthographicCamera& camera);
-        void EndScene();
-
-        void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
+        Renderer() = default;
+        ~Renderer() = default;
+        
+        static void BeginScene(class OrthographicCamera& camera);
+        static void EndScene();
+        static void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
 
     private:
-        RenderCommand* _renderCommand;
-
-        glm::mat4 _viewProjectionMatrix;
+        static glm::mat4 s_viewProjectionMatrix;
     };
 }
 

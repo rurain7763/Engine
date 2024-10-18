@@ -67,7 +67,7 @@ namespace engine {
         virtual void SetLayout(const VertexBufferLayout& layout) = 0;
         virtual const VertexBufferLayout& GetLayout() const = 0;
 
-		static VertexBuffer* Create(GraphicsContext* context, const float* vertices, unsigned int count);
+		static VertexBuffer* Create(const float* vertices, unsigned int count);
 	};
 
 	class IndexBuffer {
@@ -80,7 +80,7 @@ namespace engine {
 		virtual void Unbind() const = 0;
 		virtual unsigned int GetCount() const = 0;
 
-		static IndexBuffer* Create(GraphicsContext* context, const unsigned int* indices, unsigned int count);
+		static IndexBuffer* Create(const unsigned int* indices, unsigned int count);
 	};
 }	
 

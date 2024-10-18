@@ -5,6 +5,10 @@
 #include "GraphicsAPI.h"
 
 namespace engine {
+    enum GraphicsType {
+        None = 0, OpenGL
+    };
+
 	class GraphicsContext {
 	public:
 		GraphicsContext() = default;
@@ -13,11 +17,15 @@ namespace engine {
 		virtual void Init() = 0;
 		virtual void SwapBuffers() = 0;
 
-		virtual Ref<class Renderer>& GetRenderer() = 0;
-		virtual Ref<class RenderCommand>& GetRenderCommand() = 0;
-		virtual Ref<class GraphicsAPI>& GetAPI() = 0;
-
-		static GraphicsContext* Create(GraphicsAPI::Type api, class DisplayWindow* window);
+        static GraphicsType GetType() { return s_type; }
+        static GraphicsContext* Create(GraphicsType type, class DisplayWindow* window);
+        
+    protected:
+        static GraphicsType s_type;
+        
+        static Ref<class Renderer> _renderer;
+        static Ref<class RenderCommand> _renderCommand;
+        static Ref<class GraphicsAPI> _api;
 	};
 }
 
