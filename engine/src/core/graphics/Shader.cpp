@@ -2,7 +2,7 @@
 #include "Logger.h"
 
 #include "GraphicsContext.h"
-#include "opengl/OpengGLShader.h"
+#include "opengl/OpenGLShader.h"
 
 #include "glad/glad.h"
 

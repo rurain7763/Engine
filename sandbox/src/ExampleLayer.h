@@ -16,11 +16,11 @@ public:
 private:
     std::shared_ptr<engine::GraphicsContext> _graphicsContext;
 
-    std::shared_ptr<engine::VertexArray> _vertexArray;
-    std::shared_ptr<engine::VertexBuffer> _vertexBuffer;
-    std::shared_ptr<engine::IndexBuffer> _indexBuffer;
-    std::shared_ptr<engine::Shader> _shader;
-    std::shared_ptr<engine::OrthographicCamera> _camera;
+    engine::Ref<engine::VertexArray> _vertexArray;
+    engine::Ref<engine::VertexBuffer> _vertexBuffer;
+    engine::Ref<engine::IndexBuffer> _indexBuffer;
+    engine::Ref<engine::Shader> _shader;
+    engine::Ref<engine::OrthographicCamera> _camera;
 
     glm::vec3 _color;
 };

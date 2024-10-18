@@ -8,7 +8,7 @@ namespace engine {
     public:
         virtual void SetClearColor(float r, float g, float b, float a) override;
         virtual void Clear() override;
-        virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) override;
+        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
 
         virtual GraphicsAPI::Type GetType() override { return GraphicsAPI::Type::OpenGL; }
     };

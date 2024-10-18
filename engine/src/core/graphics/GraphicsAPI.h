@@ -15,7 +15,7 @@ namespace engine {
     public:     
         virtual void SetClearColor(float r, float g, float b, float a) = 0;
         virtual void Clear() = 0;
-        virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) = 0;
+        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;
 
         virtual GraphicsAPI::Type GetType() = 0;
     };

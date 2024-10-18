@@ -16,9 +16,9 @@ namespace engine {
         void Run();
         void Shutdown();
 
-        inline std::shared_ptr<DisplayWindow> GetWindow() const { return _window; }
-        inline std::shared_ptr<GraphicsContext> GetGraphicsContext() const { return _graphicsContext; }
-        inline std::shared_ptr<LayerGroup> GetLayerGroup() const { return _layerGroup; }
+        inline Ref<DisplayWindow> GetWindow() const { return _window; }
+        inline Ref<GraphicsContext> GetGraphicsContext() const { return _graphicsContext; }
+        inline Ref<LayerGroup> GetLayerGroup() const { return _layerGroup; }
 
     private:
         void OnWindowClosed(class WindowClosedEvent& event);
@@ -27,10 +27,10 @@ namespace engine {
     private:
         bool _running;
 
-        std::shared_ptr<DisplayWindow> _window;
-        std::shared_ptr<GraphicsContext> _graphicsContext;
+        Ref<DisplayWindow> _window;
+        Ref<GraphicsContext> _graphicsContext;
 
-        std::shared_ptr<LayerGroup> _layerGroup;
+        Ref<LayerGroup> _layerGroup;
         int _imGuiLayerID;
 
         float _lastFrameTime;

@@ -14,7 +14,7 @@ namespace engine {
         void Update();
         void Destroy();
 
-        inline std::unique_ptr<EventBus>& GetEventBus() { return _eventBus; }
+        inline Scope<EventBus>& GetEventBus() { return _eventBus; }
 
         inline void* GetNativeWindow() const { return _window; }
 
@@ -22,7 +22,7 @@ namespace engine {
         void* _window;
         int _width, _height;
 
-        std::unique_ptr<EventBus> _eventBus;
+        Scope<EventBus> _eventBus;
     }; 
 }
 

@@ -1,5 +1,8 @@
 #include "ExampleLayer.h"
 
+#include "imgui/imgui.h"
+#include "graphics/opengl/OpenGLShader.h"
+
 void ExampleLayer::OnAttach(engine::Application& app) {
     _graphicsContext = app.GetGraphicsContext();
 
@@ -50,9 +53,10 @@ void ExampleLayer::OnAttach(engine::Application& app) {
 			out vec4 FragColor;
 
 			in vec4 vertexColor;
+            uniform vec3 u_color;
 
 			void main() {
-				FragColor = vec4(vertexColor);
+				FragColor = vec4(u_color, 1.0);
 			}
 		)";
 
@@ -117,13 +121,22 @@ void ExampleLayer::OnUpdate(engine::Timestep deltaTime) {
 
     glm::mat4 rotationMat = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0, 0, 1));
     glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), scale);
+    auto glShader = std::static_pointer_cast<engine::OpenGLShader>(_shader);
 
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 20; j++) {
             glm::mat4 traslationMat = glm::translate(glm::mat4(1.0f), glm::vec3(position.x + i * 0.25f * scale.x, position.y + j * 0.25f * scale.y, position.z));
+
+            glShader->Bind();
+            glShader->SetUniformFloat3("u_color", _color);
+
             renderer->Submit(_shader, _vertexArray, traslationMat * rotationMat * scaleMat);
         }
     }
 
     renderer->EndScene();
+
+    ImGui::Begin("Settings");
+    ImGui::ColorEdit3("Color", &_color.r);
+    ImGui::End();
 }

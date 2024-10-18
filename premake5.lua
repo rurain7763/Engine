@@ -12,7 +12,7 @@ project "engine"
     kind "StaticLib"
     language "C++"
     cppdialect "C++17"
-    targetdir "bin/%{cfg.buildcfg}/%{cfg.architecture}/sandbox"
+    targetdir "bin/%{cfg.buildcfg}/%{cfg.architecture}/engine"
     objdir "bin_obj/%{cfg.buildcfg}/%{cfg.architecture}/engine"
 
     includedirs {
@@ -96,12 +96,16 @@ project "sandbox"
         "./engine/src",
         "./engine/src/core",
         "./engine/vendors/glm",
-        "./engine/vendors/imgui"
+        "./engine/vendors"
     }
     
     files {
         "./sandbox/src/**.h",
         "./sandbox/src/**.cpp"
+    }
+
+    libdirs {
+        "bin/%{cfg.buildcfg}/%{cfg.architecture}/engine"
     }
 
     links {

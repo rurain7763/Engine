@@ -13,9 +13,9 @@ namespace engine {
 		virtual void Init() = 0;
 		virtual void SwapBuffers() = 0;
 
-		virtual std::shared_ptr<class Renderer>& GetRenderer() = 0;
-		virtual std::shared_ptr<class RenderCommand>& GetRenderCommand() = 0;
-		virtual std::shared_ptr<class GraphicsAPI>& GetAPI() = 0;
+		virtual Ref<class Renderer>& GetRenderer() = 0;
+		virtual Ref<class RenderCommand>& GetRenderCommand() = 0;
+		virtual Ref<class GraphicsAPI>& GetAPI() = 0;
 
 		static GraphicsContext* Create(GraphicsAPI::Type api, class DisplayWindow* window);
 	};
