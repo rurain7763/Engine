@@ -12,6 +12,7 @@
 #include <typeindex>
 #include <functional>
 #include <bitset>
+#include <fstream>
 
 #include <stdio.h>
 

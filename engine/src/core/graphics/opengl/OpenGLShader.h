@@ -5,11 +5,10 @@
 
 #include "../Shader.h"
 
-#include <string>
-
 namespace engine {
 	class OpenGLShader : public Shader {
 	public:
+		OpenGLShader(const std::string& filePath);
 		OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource);
 		virtual ~OpenGLShader() = default;
 
@@ -28,6 +27,9 @@ namespace engine {
 		void SetUniformMat4(const std::string& name, const glm::mat4& matrix);
 
 	private:
+		std::unordered_map<unsigned int, std::string> ParseShaders(const std::string& filePath);
+		void CompileShader(const std::unordered_map<unsigned int, std::string>& shaders);
+
 		unsigned int GetUniformLocation(const std::string& name);
 
 	private:
