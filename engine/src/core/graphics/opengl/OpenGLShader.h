@@ -9,11 +9,13 @@ namespace engine {
 	class OpenGLShader : public Shader {
 	public:
 		OpenGLShader(const std::string& filePath);
-		OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource);
+		OpenGLShader(const std::string& filePath, const std::string& name);
+		OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource, const std::string& name);
 		virtual ~OpenGLShader() = default;
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+		virtual const std::string& GetName() const override { return _name; }
 
 		void SetUniformInt(const std::string& name, int value);
 
@@ -34,6 +36,7 @@ namespace engine {
 
 	private:
 		unsigned int _id;
+		std::string _name;
 
 		std::unordered_map<std::string, unsigned int> _uniformLocations;
 	};

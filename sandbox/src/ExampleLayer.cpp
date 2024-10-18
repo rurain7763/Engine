@@ -31,7 +31,7 @@ void ExampleLayer::OnAttach(engine::Application& app) {
     _texture.reset(engine::Texture2D::Create("assets/images/dog.png"));
     _alpahTexture.reset(engine::Texture2D::Create("assets/images/alpha.png"));
     
-    _shader.reset(engine::Shader::Create("assets/shaders/texture.glsl"));
+    _shaderLibrary.Load("assets/shaders/texture.glsl");
 
     _camera = std::make_shared<engine::OrthographicCamera>();
     _camera->SetProjection(-0.4, 0.4, -0.3, 0.3);
@@ -41,7 +41,6 @@ void ExampleLayer::OnDetach() {
     _vertexArray.reset();
     _vertexBuffer.reset();
     _indexBuffer.reset();
-    _shader.reset();
     _camera.reset();
 }
 
@@ -89,7 +88,7 @@ void ExampleLayer::OnUpdate(engine::Timestep deltaTime) {
 
     glm::mat4 rotationMat = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0, 0, 1));
     glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), scale);
-    auto glShader = std::static_pointer_cast<engine::OpenGLShader>(_shader);
+    auto glShader = std::static_pointer_cast<engine::OpenGLShader>(_shaderLibrary.Get("texture"));
 
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 20; j++) {
@@ -99,11 +98,11 @@ void ExampleLayer::OnUpdate(engine::Timestep deltaTime) {
             glShader->SetUniformFloat3("u_color", _color);
             _texture->Bind(0);
             glShader->SetUniformInt("u_texture", 0);
-            engine::Renderer::Submit(_shader, _vertexArray, traslationMat * rotationMat * scaleMat);
+            engine::Renderer::Submit(glShader, _vertexArray, traslationMat * rotationMat * scaleMat);
 
             _alpahTexture->Bind(0);
             glShader->SetUniformInt("u_texture", 0);
-            engine::Renderer::Submit(_shader, _vertexArray, traslationMat * rotationMat * scaleMat);
+            engine::Renderer::Submit(glShader, _vertexArray, traslationMat * rotationMat * scaleMat);
         }
     }
 

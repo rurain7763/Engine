@@ -7,13 +7,36 @@ namespace engine {
 	OpenGLShader::OpenGLShader(const std::string& filePath) {
 		auto shaders = ParseShaders(filePath);
 		CompileShader(shaders);
+
+		int i = 0, j = 0;
+		for (j = filePath.size() - 1; j > -1; j--) {
+			if (filePath[j] == '.') break;
+		}
+		for (i = j - 1; i > -1; i--) {
+			if (filePath[i] == '/' || filePath[i] == '\\') break;
+		}
+
+		if (i < 0) {
+			if(j == -1) _name = filePath;
+			else _name = filePath.substr(0, j);
+		}
+		else {
+			_name = filePath.substr(i + 1, j - i - 1);
+		}
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource) {
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& filePath) {
+		auto shaders = ParseShaders(filePath);
+		CompileShader(shaders);
+		_name = name;
+	}
+
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource) {
 		std::unordered_map<unsigned int, std::string> shaders;
 		shaders[GL_VERTEX_SHADER] = vertexSource;
 		shaders[GL_FRAGMENT_SHADER] = fragmentSource;
 		CompileShader(shaders);
+		_name = name;
 	}
 
 	void OpenGLShader::Bind() const {
@@ -27,7 +50,7 @@ namespace engine {
 	std::unordered_map<unsigned int, std::string> OpenGLShader::ParseShaders(const std::string& filePath) {
 		std::unordered_map<unsigned int, std::string> shaders;
 
-		std::ifstream file(filePath, std::ifstream::binary);
+		std::ifstream file(filePath, std::ios::in | std::ifstream::binary);
 		if (file.is_open()) {
 			unsigned int currentType = GL_INVALID_INDEX;
 
@@ -61,8 +84,9 @@ namespace engine {
 
 	void OpenGLShader::CompileShader(const std::unordered_map<unsigned int, std::string>& shaders) {
 		GLuint program = glCreateProgram();
-		std::vector<GLuint> compiledShaderIDs(shaders.size());
+		EG_ASSERT(shaders.size() <= 2, "Only support vertex and fragment shaders");
 
+		std::array<GLuint, 2> compiledShaderIDs;
 		int index = 0;
 		for (const auto& pair : shaders) {
 			GLenum shaderType = pair.first;

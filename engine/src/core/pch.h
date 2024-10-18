@@ -13,6 +13,7 @@
 #include <functional>
 #include <bitset>
 #include <fstream>
+#include <array>
 
 #include <stdio.h>
 
