@@ -93,7 +93,9 @@ void ExampleLayer::OnUpdate(engine::Timestem deltaTime) {
     }
 
     engine::Renderer::EndScene();
+}
 
+void ExampleLayer::OnGUIUpdate() {
     ImGui::Begin("Settings");
     ImGui::ColorEdit3("Color", &_color.r);
     ImGui::End();

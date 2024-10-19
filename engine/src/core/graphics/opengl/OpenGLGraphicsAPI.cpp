@@ -10,6 +10,10 @@ namespace engine {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
+    void OpenGLGraphicsAPI::SetViewport(int x, int y, int width, int height) {
+		glViewport(x, y, width, height);
+	}
+
     void OpenGLGraphicsAPI::SetClearColor(float r, float g, float b, float a) {
         glClearColor(r, g, b, a);   
     }

@@ -12,19 +12,23 @@ namespace engine {
 
         void Init(int width, int height, const char* title);
         void Update();
+        void PollEvents();
         void Destroy();
 
-        inline Scope<EventBus>& GetEventBus() { return _eventBus; }
-        inline int GetWidth() const { return _width; }
-        inline int GetHeight() const { return _height; }
+        inline Scope<EventBus>& GetEventBus() { return _data.eventBus; }
+        inline int GetWidth() const { return _data.width; }
+        inline int GetHeight() const { return _data.height; }
 
-        inline void* GetNativeWindow() const { return _window; }
+        inline void* GetNativeWindow() const { return _data.window; }
 
     private:
-        void* _window;
-        int _width, _height;
+        struct Data {
+            void* window;
+            int width, height;
+            Scope<EventBus> eventBus;
+        };
 
-        Scope<EventBus> _eventBus;
+        Data _data;
     }; 
 }
 

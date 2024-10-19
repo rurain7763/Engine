@@ -2,7 +2,6 @@
 #define GRAPHICSCONTEXT_H
 
 #include "EngineHeader.h"
-#include "GraphicsAPI.h"
 
 namespace engine {
     enum GraphicsType {
@@ -14,8 +13,7 @@ namespace engine {
 		GraphicsContext() = default;
 		virtual ~GraphicsContext() = default;
 
-		virtual void Init() = 0;
-		virtual void SwapBuffers() = 0;
+		virtual void Init(class DisplayWindow* window) = 0;
 
         static GraphicsType GetType() { return s_type; }
         static GraphicsContext* Create(GraphicsType type, class DisplayWindow* window);

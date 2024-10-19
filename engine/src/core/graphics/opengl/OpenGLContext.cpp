@@ -1,4 +1,5 @@
 #include "OpenGLContext.h"
+#include "DisplayWindow.h"
 #include "OpenGLGraphicsAPI.h"
 #include "../RenderCommand.h"
 #include "../Renderer.h"
@@ -9,13 +10,10 @@
 #include "GLFW/glfw3.h"
 
 namespace engine {
-	OpenGLContext::OpenGLContext(GLFWwindow* nativeWindow)
-		: _nativeWindow(nativeWindow)
-	{
-		EG_ASSERT(nativeWindow != nullptr, "Window is null");
-	}
 
-	void OpenGLContext::Init() {
+	void OpenGLContext::Init(DisplayWindow* window) {
+		_nativeWindow = static_cast<GLFWwindow*>(window->GetNativeWindow());
+
 		glfwMakeContextCurrent(_nativeWindow);
 		
         s_type = GraphicsType::OpenGL;
@@ -29,9 +27,5 @@ namespace engine {
 		EG_LOG_INFO("  Version: %s", glGetString(GL_VERSION));
 
         RenderCommand::Init();
-	}
-
-	void OpenGLContext::SwapBuffers() {
-		glfwSwapBuffers(_nativeWindow);
 	}
 }

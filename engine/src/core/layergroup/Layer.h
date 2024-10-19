@@ -21,6 +21,7 @@ namespace engine {
 
         virtual void OnAttach(class Application& app) = 0;
         virtual void OnUpdate(Timestem deltaTime) = 0;
+        virtual void OnGUIUpdate() = 0;
         virtual void OnDetach() = 0;
         
         inline const std::string& GetName() const { return _name; }

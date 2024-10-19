@@ -12,7 +12,8 @@ namespace engine {
         ~RenderCommand() = default;
 
         static void Init();
-        
+
+        static void SetViewport(int x, int y, int width, int height);
         static void SetClearColor(float r, float g, float b, float a);
         static void Clear();
 

@@ -26,6 +26,7 @@ namespace engine {
 
     private:
         bool _running;
+        bool _windowHidden;
 
         Ref<DisplayWindow> _window;
         Ref<GraphicsContext> _graphicsContext;

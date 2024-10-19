@@ -19,7 +19,7 @@
 
 namespace engine {
 	DisplayWindow::DisplayWindow() {
-		_eventBus = std::make_unique<EventBus>();
+		_data.eventBus = std::make_unique<EventBus>();
 	}
 
 	void DisplayWindow::Init(int width, int height, const char* title) {
@@ -36,65 +36,69 @@ namespace engine {
 
 		glfwMakeContextCurrent(window);
 
-		glfwSetWindowUserPointer(window, this);
+		_data.window = window;
+		_data.width = width;
+		_data.height = height;
+
+		glfwSetWindowUserPointer(window, &_data);
 
 		glfwSetWindowCloseCallback(window, [](GLFWwindow* window) {
-			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-			displayWindow->GetEventBus()->Publish<WindowClosedEvent>();
-			});
+			Data* data = (Data*)glfwGetWindowUserPointer(window);
+			data->eventBus->Publish<WindowClosedEvent>();
+		});
 
 		glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height) {
-			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-			displayWindow->GetEventBus()->Publish<WindowResizedEvent>(width, height);
-			});
+			Data* data = (Data*)glfwGetWindowUserPointer(window);
+			data->width = width;
+			data->height = height;
+			data->eventBus->Publish<WindowResizedEvent>(width, height);
+		});
 
 		glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
+			Data* data = (Data*)glfwGetWindowUserPointer(window);
 			switch (action) {
 			case GLFW_PRESS:
-				displayWindow->GetEventBus()->Publish<KeyPressedEvent>(key);
+				data->eventBus->Publish<KeyPressedEvent>(key);
 				break;
 			case GLFW_RELEASE:
-				displayWindow->GetEventBus()->Publish<KeyReleasedEvent>(key);
+				data->eventBus->Publish<KeyReleasedEvent>(key);
 				break;
 			}
-			});
+		});
 
 		glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
-			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
+			Data* data = (Data*)glfwGetWindowUserPointer(window);
 			switch (action) {
 			case GLFW_PRESS:
-				displayWindow->GetEventBus()->Publish<MouseButtonPressedEvent>(button);
+				data->eventBus->Publish<MouseButtonPressedEvent>(button);
 				break;
 			case GLFW_RELEASE:
-				displayWindow->GetEventBus()->Publish<MouseButtonReleasedEvent>(button);
+				data->eventBus->Publish<MouseButtonReleasedEvent>(button);
 				break;
 			}
-			});
+		});
 
 		glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos) {
-			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-			displayWindow->GetEventBus()->Publish<MouseMovedEvent>(static_cast<int>(xpos), static_cast<int>(ypos));
+			Data* data = (Data*)glfwGetWindowUserPointer(window);
+			data->eventBus->Publish<MouseMovedEvent>(static_cast<int>(xpos), static_cast<int>(ypos));
 			});
 
 		glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset) {
-			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-			displayWindow->GetEventBus()->Publish<MouseScrolledEvent>(xoffset, yoffset);
-			});
-
-		_window = window;
-		_width = width;
-		_height = height;
+			Data* data = (Data*)glfwGetWindowUserPointer(window);
+			data->eventBus->Publish<MouseScrolledEvent>(xoffset, yoffset);
+		});
 	}
 
 	void DisplayWindow::Update() {
+		glfwSwapBuffers(static_cast<GLFWwindow*>(_data.window));
+	}
+
+	void DisplayWindow::PollEvents() {
 		glfwPollEvents();
 	}
 
 	void DisplayWindow::Destroy() {
-		GLFWwindow* window = (GLFWwindow*)_window;
-
-		glfwDestroyWindow(window);
+		glfwDestroyWindow(static_cast<GLFWwindow*>(_data.window));
 		glfwTerminate();
 	}
 }

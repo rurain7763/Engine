@@ -12,6 +12,7 @@ public:
     virtual void OnAttach(engine::Application& app) override;
     virtual void OnDetach() override;
     virtual void OnUpdate(engine::Timestem deltaTime) override;
+    virtual void OnGUIUpdate() override;
 
 private:
     engine::ShaderLibrary _shaderLibrary;

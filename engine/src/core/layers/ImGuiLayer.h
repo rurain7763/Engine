@@ -13,6 +13,7 @@ namespace engine {
 		virtual void OnAttach(class Application& app);
 		virtual void OnDetach() override;
 		virtual void OnUpdate(Timestem deltaTime) override;
+		virtual void OnGUIUpdate() override;
 
 		void Begin();
 		void End();

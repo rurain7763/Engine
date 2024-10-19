@@ -8,10 +8,10 @@ struct GLFWwindow;
 namespace engine {
 	class OpenGLContext : public GraphicsContext {
 	public:
-		OpenGLContext(GLFWwindow* nativeWindow);
+		OpenGLContext() : _nativeWindow(nullptr) {}
+		~OpenGLContext() = default;
 
-		virtual void Init() override;
-		virtual void SwapBuffers() override;
+		virtual void Init(class DisplayWindow* window) override;
 
 	private:
 		GLFWwindow* _nativeWindow;

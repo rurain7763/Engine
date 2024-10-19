@@ -18,6 +18,10 @@ namespace engine {
         return;
     }
 
+    void RenderCommand::SetViewport(int x, int y, int width, int height) {
+		s_api->SetViewport(x, y, width, height);
+	}
+
     void RenderCommand::SetClearColor(float r, float g, float b, float a) {
         s_api->SetClearColor(r, g, b, a);
     }
