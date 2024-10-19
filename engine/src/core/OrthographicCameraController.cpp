@@ -28,18 +28,20 @@ namespace engine {
 		glm::vec3 cameraPosition = _camera.GetPosition();
 
 		if (Input::IsKeyPressed(EG_KEY_D)) {
-			_camera.SetPosition(cameraPosition.x + _cameraMoveSpeed * deltaTime, cameraPosition.y, cameraPosition.z);
+			cameraPosition.x += _cameraMoveSpeed * deltaTime;
 		}
 		else if (engine::Input::IsKeyPressed(EG_KEY_A)) {
-			_camera.SetPosition(cameraPosition.x - _cameraMoveSpeed * deltaTime, cameraPosition.y, cameraPosition.z);
+			cameraPosition.x -= _cameraMoveSpeed * deltaTime;
 		}
 
 		if (engine::Input::IsKeyPressed(EG_KEY_W)) {
-			_camera.SetPosition(cameraPosition.x, cameraPosition.y + _cameraMoveSpeed * deltaTime, cameraPosition.z);
+			cameraPosition.y += _cameraMoveSpeed * deltaTime;
 		}
 		else if (engine::Input::IsKeyPressed(EG_KEY_S)) {
-			_camera.SetPosition(cameraPosition.x, cameraPosition.y - _cameraMoveSpeed * deltaTime, cameraPosition.z);
+			cameraPosition.y -= _cameraMoveSpeed * deltaTime;
 		}
+
+		_camera.SetPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z);
 	}
 
 	void OrthoGraphicCameraController::OnMouseScrolled(MouseScrolledEvent& e) {

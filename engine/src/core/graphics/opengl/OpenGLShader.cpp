@@ -47,6 +47,21 @@ namespace engine {
 		glUseProgram(0);
 	}
 
+	void OpenGLShader::SetInt(const std::string& name, int value) {
+		GLint location = GetUniformLocation(name);
+		glUniform1i(location, value);
+	}
+
+	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& vector) {
+		GLint location = GetUniformLocation(name);
+		glUniform3f(location, vector.x, vector.y, vector.z);
+	}
+
+	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& matrix) {
+		GLint location = GetUniformLocation(name);
+		glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
+	}
+
 	std::unordered_map<unsigned int, std::string> OpenGLShader::ParseShaders(const std::string& filePath) {
 		std::unordered_map<unsigned int, std::string> shaders;
 
@@ -166,11 +181,6 @@ namespace engine {
 		return location;
 	}
 
-	void OpenGLShader::SetUniformInt(const std::string& name, int value) {
-		GLint location = GetUniformLocation(name);
-		glUniform1i(location, value);
-	}
-
 	void OpenGLShader::SetUniformFloat(const std::string& name, float value) {
 		GLint location = GetUniformLocation(name);
 		glUniform1f(location, value);
@@ -181,11 +191,6 @@ namespace engine {
 		glUniform2f(location, vector.x, vector.y);
 	}
 
-	void OpenGLShader::SetUniformFloat3(const std::string& name, const glm::vec3& vector) {
-		GLint location = GetUniformLocation(name);
-		glUniform3f(location, vector.x, vector.y, vector.z);
-	}
-
 	void OpenGLShader::SetUniformFloat4(const std::string& name, const glm::vec4& vector) {
 		GLint location = GetUniformLocation(name);
 		glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
@@ -194,10 +199,5 @@ namespace engine {
 	void OpenGLShader::SetUniformMat3(const std::string& name, const glm::mat3& matrix) {
 		GLint location = GetUniformLocation(name);
 		glUniformMatrix3fv(location, 1, GL_FALSE, &matrix[0][0]);
-	}
-
-	void OpenGLShader::SetUniformMat4(const std::string& name, const glm::mat4& matrix) {
-		GLint location = GetUniformLocation(name);
-		glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
 	}
 }

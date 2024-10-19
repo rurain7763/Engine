@@ -25,8 +25,8 @@ namespace engine {
         auto glShader = std::static_pointer_cast<OpenGLShader>(shader);
 
         glShader->Bind();
-        glShader->SetUniformMat4("u_viewProjection", s_viewProjectionMatrix);
-        glShader->SetUniformMat4("u_transform", transform);
+        glShader->SetMat4("u_viewProjection", s_viewProjectionMatrix);
+        glShader->SetMat4("u_transform", transform);
 
         RenderCommand::DrawIndexed(vertexArray);
     }

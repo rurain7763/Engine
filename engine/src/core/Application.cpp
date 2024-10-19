@@ -22,7 +22,7 @@ namespace engine {
         Logger::Init();
 
         _window = std::make_shared<DisplayWindow>();
-        _window->Init(800, 600, "Engine");
+        _window->Init(1280, 720, "Engine");
         _window->GetEventBus()->Subscribe<Application, WindowClosedEvent>(this, &Application::OnWindowClosed);
         _window->GetEventBus()->Subscribe<Application, WindowResizedEvent>(this, &Application::OnWindowResize);
 

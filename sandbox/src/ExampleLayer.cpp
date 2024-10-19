@@ -1,17 +1,16 @@
 #include "ExampleLayer.h"
 
-#include "imgui/imgui.h"
-#include "graphics/opengl/OpenGLShader.h"
+#include <imgui/imgui.h>
 
 void ExampleLayer::OnAttach(engine::Application& app) {
     _vertexArray.reset(engine::VertexArray::Create());
     _vertexArray->Bind();
 
     float vertices[] = {
-        -0.125f, -0.125f, 0.0f, 0.8f, 0.3f, 0.2f, 1.0f, 0.f, 0.f,
-        -0.124f, 0.125f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f, 0.f, 1.f,
-        0.125f, -0.125f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f, 1.f, 0.f,
-        0.125f, 0.125f, 0.0f, 0.2f, 0.8f, 0.8f, 1.0f, 1.f, 1.f
+        -0.5f, -0.5f, 0.0f, 0.8f, 0.3f, 0.2f, 1.0f, 0.f, 0.f,
+        -0.5f, 0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f, 0.f, 1.f,
+        0.5f, -0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f, 1.f, 0.f,
+        0.5f, 0.5f, 0.0f, 0.2f, 0.8f, 0.8f, 1.0f, 1.f, 1.f
     };
 
     _vertexBuffer.reset(engine::VertexBuffer::Create(vertices, sizeof(vertices) / sizeof(float)));
@@ -39,31 +38,15 @@ void ExampleLayer::OnAttach(engine::Application& app) {
 
 void ExampleLayer::OnDetach() {
     _vertexArray.reset();
-    _vertexBuffer.reset();
-    _indexBuffer.reset();
+    //_vertexBuffer.reset();
+    //_indexBuffer.reset();
     _camera.reset();
 }
 
 void ExampleLayer::OnUpdate(engine::Timestem deltaTime) {
     static glm::vec3 position = glm::vec3(0, 0, 0);
     static glm::vec3 rotation = glm::vec3(0, 0, 0);
-    static glm::vec3 scale = glm::vec3(0.25, 0.25, 0.25);
-
-    rotation.z += 50.0f * deltaTime;
-
-    if (engine::Input::IsKeyPressed(EG_KEY_UP)) {
-        position.y += 0.5f * deltaTime;
-    }
-    else if (engine::Input::IsKeyPressed(EG_KEY_DOWN)) {
-        position.y -= 0.5f * deltaTime;
-    }
-
-    if (engine::Input::IsKeyPressed(EG_KEY_LEFT)) {
-        position.x -= 0.5f * deltaTime;
-    }
-    else if (engine::Input::IsKeyPressed(EG_KEY_RIGHT)) {
-        position.x += 0.5f * deltaTime;
-    }
+    static glm::vec3 scale = glm::vec3(1, 1, 1);
 
     _camera->Update(deltaTime);
 
@@ -74,23 +57,19 @@ void ExampleLayer::OnUpdate(engine::Timestem deltaTime) {
 
     glm::mat4 rotationMat = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0, 0, 1));
     glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), scale);
-    auto glShader = std::static_pointer_cast<engine::OpenGLShader>(_shaderLibrary.Get("texture"));
+    glm::mat4 traslationMat = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, position.z));
 
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 20; j++) {
-            glm::mat4 traslationMat = glm::translate(glm::mat4(1.0f), glm::vec3(position.x + i * 0.25f * scale.x, position.y + j * 0.25f * scale.y, position.z));
+    auto shader = _shaderLibrary.Get("texture");
 
-            glShader->Bind();
-            glShader->SetUniformFloat3("u_color", _color);
-            _texture->Bind(0);
-            glShader->SetUniformInt("u_texture", 0);
-            engine::Renderer::Submit(glShader, _vertexArray, traslationMat * rotationMat * scaleMat);
+    shader->Bind();
+    shader->SetFloat3("u_color", _color);
+    _texture->Bind(0);
+    shader->SetInt("u_texture", 0);
+    engine::Renderer::Submit(shader, _vertexArray, traslationMat * rotationMat * scaleMat);
 
-            _alpahTexture->Bind(0);
-            glShader->SetUniformInt("u_texture", 0);
-            engine::Renderer::Submit(glShader, _vertexArray, traslationMat * rotationMat * scaleMat);
-        }
-    }
+    _alpahTexture->Bind(0);
+    shader->SetInt("u_texture", 0);
+    engine::Renderer::Submit(shader, _vertexArray, traslationMat * rotationMat * scaleMat);
 
     engine::Renderer::EndScene();
 }

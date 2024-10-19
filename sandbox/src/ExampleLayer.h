@@ -1,9 +1,10 @@
 #ifndef EXAMPLE_LAYER_H
 #define EXAMPLE_LAYER_H
 
-#include "Engine.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include <Engine.h>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <memory>
 
@@ -16,14 +17,14 @@ public:
 
 private:
     engine::ShaderLibrary _shaderLibrary;
+    engine::Ref<engine::OrthoGraphicCameraController> _camera;
 
     engine::Ref<engine::VertexArray> _vertexArray;
     engine::Ref<engine::VertexBuffer> _vertexBuffer;
     engine::Ref<engine::IndexBuffer> _indexBuffer;
-    engine::Ref<engine::OrthoGraphicCameraController> _camera;
     engine::Ref<engine::Texture> _texture, _alpahTexture;
 
-    glm::vec3 _color;
+    glm::vec3 _color = glm::vec3(1.0);
 };
 
 #endif
