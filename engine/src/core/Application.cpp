@@ -4,7 +4,7 @@
 #include "Logger.h"
 #include "input/Input.h"
 #include "input/KeyCodes.h"
-#include "utils/Timestep.h"
+#include "utils/Timestem.h"
 
 #include "eventbus/EventBus.h"
 #include "events/WindowClosedEvent.h"
@@ -45,7 +45,7 @@ namespace engine {
 
         while(_running) {
             float currTime = static_cast<float>(glfwGetTime());
-            Timestep deltaTime = currTime - _lastFrameTime;
+            Timestem deltaTime = currTime - _lastFrameTime;
             _lastFrameTime = currTime;
 
             ImGuiLayer* imGuiLayer = _layerGroup->GetLayer<ImGuiLayer>(_imGuiLayerID);
@@ -79,6 +79,6 @@ namespace engine {
 	}
 
     void Application::OnWindowResize(WindowResizedEvent& event) {
-		EG_LOG_INFO("Window resized: %dx%d", event.GetX(), event.GetY());
+		EG_LOG_INFO("Window resized: %dx%d", event.GetWidth(), event.GetHeight());
 	} 
 }

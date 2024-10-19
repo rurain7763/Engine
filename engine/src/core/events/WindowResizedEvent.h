@@ -7,17 +7,17 @@
 namespace engine {
     class WindowResizedEvent : public Event {
     public:
-        WindowResizedEvent(int x, int y) : _x(x), _y(y) {}
+        WindowResizedEvent(int width, int height) : _width(width), _height(height) {}
 
-        inline int GetX() const { return _x; }
-        inline int GetY() const { return _y; }
+        inline int GetWidth() const { return _width; }
+        inline int GetHeight() const { return _height; }
 
         std::string ToString() const {
-            return "WindowResizedEvent: x = " + std::to_string(_x) + " y = " + std::to_string(_y);
+            return "WindowResizedEvent: x = " + std::to_string(_width) + " y = " + std::to_string(_height);
         }
 
     private:
-        int _x, _y;
+        int _width, _height;
     };
 }
 

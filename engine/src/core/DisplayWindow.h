@@ -15,6 +15,8 @@ namespace engine {
         void Destroy();
 
         inline Scope<EventBus>& GetEventBus() { return _eventBus; }
+        inline int GetWidth() const { return _width; }
+        inline int GetHeight() const { return _height; }
 
         inline void* GetNativeWindow() const { return _window; }
 

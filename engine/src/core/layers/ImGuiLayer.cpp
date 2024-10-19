@@ -60,7 +60,7 @@ namespace engine {
 		}
 	}
 
-	void ImGuiLayer::OnUpdate(Timestep deltaTime) {
+	void ImGuiLayer::OnUpdate(Timestem deltaTime) {
 		static bool show = true;
 		ImGui::ShowDemoWindow(&show);	
 	}

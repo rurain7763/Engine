@@ -3,6 +3,7 @@
 
 #include "core/Application.h"
 #include "core/Logger.h"
+#include "core/OrthographicCameraController.h"
 
 // ========================
 // Layers
@@ -31,12 +32,11 @@
 #include "graphics/VertexArray.h"
 #include "graphics/Renderer.h"
 #include "graphics/RenderCommand.h"
-#include "graphics/OrthographicCamera.h"
 #include "graphics/Texture.h"
 
 // ========================
 // Utils
 // ========================
-#include "utils/Timestep.h"
+#include "utils/Timestem.h"
 
 #endif // ENGINE_H

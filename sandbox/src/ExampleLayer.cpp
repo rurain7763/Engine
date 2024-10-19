@@ -33,8 +33,8 @@ void ExampleLayer::OnAttach(engine::Application& app) {
     
     _shaderLibrary.Load("assets/shaders/texture.glsl");
 
-    _camera = std::make_shared<engine::OrthographicCamera>();
-    _camera->SetProjection(-0.4, 0.4, -0.3, 0.3);
+    _camera = std::make_shared<engine::OrthoGraphicCameraController>();
+    _camera->Init(app);
 }
 
 void ExampleLayer::OnDetach() {
@@ -44,47 +44,33 @@ void ExampleLayer::OnDetach() {
     _camera.reset();
 }
 
-void ExampleLayer::OnUpdate(engine::Timestep deltaTime) {
-    glm::vec3 cameraPosition = _camera->GetPosition();
-
-    if (engine::Input::IsKeyPressed(EG_KEY_RIGHT)) {
-        _camera->SetPosition(cameraPosition.x + 0.5f * deltaTime, cameraPosition.y, cameraPosition.z);
-    }
-    else if (engine::Input::IsKeyPressed(EG_KEY_LEFT)) {
-        _camera->SetPosition(cameraPosition.x - 0.5f * deltaTime, cameraPosition.y, cameraPosition.z);
-    }
-
-    if (engine::Input::IsKeyPressed(EG_KEY_UP)) {
-        _camera->SetPosition(cameraPosition.x, cameraPosition.y + 0.5f * deltaTime, cameraPosition.z);
-    }
-    else if (engine::Input::IsKeyPressed(EG_KEY_DOWN)) {
-        _camera->SetPosition(cameraPosition.x, cameraPosition.y - 0.5f * deltaTime, cameraPosition.z);
-    }
-
+void ExampleLayer::OnUpdate(engine::Timestem deltaTime) {
     static glm::vec3 position = glm::vec3(0, 0, 0);
     static glm::vec3 rotation = glm::vec3(0, 0, 0);
     static glm::vec3 scale = glm::vec3(0.25, 0.25, 0.25);
 
     rotation.z += 50.0f * deltaTime;
 
-    if (engine::Input::IsKeyPressed(EG_KEY_W)) {
+    if (engine::Input::IsKeyPressed(EG_KEY_UP)) {
         position.y += 0.5f * deltaTime;
     }
-    else if (engine::Input::IsKeyPressed(EG_KEY_S)) {
+    else if (engine::Input::IsKeyPressed(EG_KEY_DOWN)) {
         position.y -= 0.5f * deltaTime;
     }
 
-    if (engine::Input::IsKeyPressed(EG_KEY_A)) {
+    if (engine::Input::IsKeyPressed(EG_KEY_LEFT)) {
         position.x -= 0.5f * deltaTime;
     }
-    else if (engine::Input::IsKeyPressed(EG_KEY_D)) {
+    else if (engine::Input::IsKeyPressed(EG_KEY_RIGHT)) {
         position.x += 0.5f * deltaTime;
     }
+
+    _camera->Update(deltaTime);
 
     engine::RenderCommand::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     engine::RenderCommand::Clear();
 
-    engine::Renderer::BeginScene(*_camera.get());
+    engine::Renderer::BeginScene(_camera->GetCamera());
 
     glm::mat4 rotationMat = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0, 0, 1));
     glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), scale);
