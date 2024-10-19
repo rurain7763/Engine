@@ -2,7 +2,7 @@
 #define WINDOWRESIZEDEVENT_H
 
 #include "EngineHeader.h"
-#include "../eventbus/Event.h"
+#include "Event.h"
 
 namespace engine {
     class WindowResizedEvent : public Event {

@@ -2,6 +2,8 @@
 #define INPUT_H
 
 #include "EngineHeader.h"
+#include "KeyCodes.h"
+#include "MouseButtons.h"
 
 namespace engine {
 	class EG_API Input {

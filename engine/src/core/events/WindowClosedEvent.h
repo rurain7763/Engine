@@ -2,7 +2,7 @@
 #define WINDOWCLOSEEVENT_H
 
 #include "EngineHeader.h"
-#include "../eventbus/Event.h"
+#include "Event.h"
 
 namespace engine {
     class WindowClosedEvent : public Event {

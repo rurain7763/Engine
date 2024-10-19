@@ -2,7 +2,7 @@
 #define KEYPRESSEDEVENT_H
 
 #include "EngineHeader.h"
-#include "../eventbus/Event.h"
+#include "Event.h"
 
 namespace engine {
     class KeyPressedEvent : public Event {

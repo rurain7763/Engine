@@ -2,7 +2,7 @@
 #define MOUSEBUTTONPRESSEDEVENT_H
 
 #include "EngineHeader.h"
-#include "../eventbus/Event.h"
+#include "Event.h"
 
 namespace engine {
     class MouseButtonPressedEvent : public Event {

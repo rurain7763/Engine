@@ -2,15 +2,14 @@
 #include "DisplayWindow.h"
 #include "Application.h"
 #include "Logger.h"
-#include "input/Input.h"
-#include "input/KeyCodes.h"
+#include "Input.h"
 #include "utils/Timestem.h"
 
-#include "eventbus/EventBus.h"
+#include "EventBus.h"
 #include "events/WindowClosedEvent.h"
 #include "events/WindowResizedEvent.h"
 
-#include "layergroup/LayerGroup.h"
+#include "LayerGroup.h"
 #include "layers/ImGuiLayer.h"
 
 #include "graphics/GraphicsContext.h"

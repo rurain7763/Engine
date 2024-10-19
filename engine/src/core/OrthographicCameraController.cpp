@@ -3,12 +3,11 @@
 #include "Application.h"
 #include "DisplayWindow.h"
 
-#include "eventbus/EventBus.h"
+#include "EventBus.h"
 #include "events/MouseScrolledEvent.h"
 #include "events/WindowResizedEvent.h"
 
-#include "input/Input.h"
-#include "input/KeyCodes.h"
+#include "Input.h"
 
 #include "glm/glm.hpp"
 

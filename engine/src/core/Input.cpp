@@ -1,8 +1,8 @@
 #include "Input.h"
 
-#include "../DisplayWindow.h"
+#include "DisplayWindow.h"
 
-#include "../eventbus/EventBus.h"
+#include "EventBus.h"
 #include "events/KeyPressedEvent.h"
 #include "events/KeyReleasedEvent.h"
 #include "events/MouseButtonPressedEvent.h"

@@ -8,20 +8,18 @@
 // ========================
 // Layers
 // ========================
-#include "core/layergroup/LayerGroup.h"
-#include "core/layergroup/Layer.h"
+#include "core/LayerGroup.h"
+#include "core/Layer.h"
 
 // ========================
 // Input
 // ========================
-#include "input/Input.h"
-#include "input/KeyCodes.h"
-#include "input/MouseButtons.h"
+#include "Input.h"
 
 // ========================
 // Event
 // ========================
-#include "core/eventbus/EventBus.h"
+#include "core/EventBus.h"
 
 // ========================
 // Graphics

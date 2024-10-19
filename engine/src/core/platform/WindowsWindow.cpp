@@ -5,7 +5,7 @@
 #include "../DisplayWindow.h"
 #include "../Logger.h"
 
-#include "eventbus/EventBus.h"
+#include "EventBus.h"
 #include "../events/WindowClosedEvent.h"
 #include "../events/WindowResizedEvent.h"
 #include "../events/KeyPressedEvent.h"
