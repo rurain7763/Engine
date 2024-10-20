@@ -15,3 +15,5 @@ Makefile
 
 **.xcworkspace/
 **.xcodeproj
+
+/sandbox/EngineProfile-*.json
