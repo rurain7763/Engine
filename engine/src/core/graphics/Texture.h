@@ -20,6 +20,9 @@ namespace engine {
         Texture2D() = default;
         virtual ~Texture2D() = default;
         
+        virtual void SetData(void* data, unsigned int size) = 0;
+
+        static Texture2D* Create(unsigned int width, unsigned int height, unsigned int channels = 4);
         static Texture2D* Create(const std::string& path);
     };
 }
