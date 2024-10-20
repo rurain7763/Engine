@@ -15,6 +15,7 @@ public:
 
 private:
     engine::Ref<engine::OrthoGraphicCameraController> _cameraCtrl;
+    engine::Ref<engine::Texture2D> _texture;
 };
 
 #endif

@@ -3,14 +3,15 @@
 #include "imgui/imgui.h"
 
 void Layer2D::OnAttach(engine::Application& app) {
-    engine::Renderer2D::Init();
-
     _cameraCtrl = std::make_shared<engine::OrthoGraphicCameraController>();
     _cameraCtrl->Init(app);
+
+    _texture.reset( engine::Texture2D::Create("assets/images/dog.png"));
 }
 
 void Layer2D::OnDetach() {
-    engine::Renderer2D::Destroy();
+	_texture.reset();
+	_cameraCtrl.reset();
 }
 
 void Layer2D::OnUpdate(engine::Timestem deltaTime) {
@@ -20,8 +21,9 @@ void Layer2D::OnUpdate(engine::Timestem deltaTime) {
     engine::RenderCommand::Clear();
 
     engine::Renderer2D::BeginScene(_cameraCtrl->GetCamera());
-    engine::Renderer2D::DrawRect({ 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f, { 0.2f, 0.3f, 0.8f, 1.0f });
-    engine::Renderer2D::DrawRect({ 0.5f, 0.5f }, { 0.5f, 0.5f }, 0.0f, { 0.8f, 0.3f, 0.2f, 1.0f });
+    engine::Renderer2D::DrawRect({ 0.0f, 0.0f, 0.f}, { 1.0f, 1.0f }, 0.0f, { 0.2f, 0.3f, 0.8f, 1.0f });
+    engine::Renderer2D::DrawRect({ 0.5f, 0.5f, 0.f}, { 0.5f, 0.5f }, 0.0f, { 0.8f, 0.3f, 0.2f, 1.0f });
+    engine::Renderer2D::DrawRect({ 0.0f, 0.0f, -0.5f}, { 10.f, 10.f }, 0.0f, _texture.get());
     engine::Renderer2D::EndScene();
 }
 

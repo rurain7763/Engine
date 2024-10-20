@@ -41,16 +41,15 @@ namespace engine {
         vertexArray->SetIndexBuffer(indexBuffer);
 
         shaderLibrary.Load("assets/shaders/flatcolor.glsl");
-    }
-
-    void Renderer2D::Destroy() {
-        indexBuffer.reset();
-        vertexBuffer.reset();
-        vertexArray.reset();
+        shaderLibrary.Load("assets/shaders/texture.glsl");
     }
 
     void Renderer2D::BeginScene(OrthographicCamera &camera) {
         auto shader = shaderLibrary.Get("flatcolor");
+        shader->Bind();
+        shader->SetMat4("uViewProjection", camera.GetViewProjectionMatrix());
+
+        shader = shaderLibrary.Get("texture");
         shader->Bind();
         shader->SetMat4("uViewProjection", camera.GetViewProjectionMatrix());
     }
@@ -59,16 +58,36 @@ namespace engine {
         
     }
 
-    void Renderer2D::DrawRect(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color) {
+    void Renderer2D::DrawRect(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color) {
+        vertexArray->Bind();
+        
         auto shader = shaderLibrary.Get("flatcolor");
         shader->Bind();
         shader->SetFloat4("uColor", color);
 
-        glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(position, 0.0f));
+        glm::mat4 translation = glm::translate(glm::mat4(1.0f), position);
         glm::mat4 rotationMat = glm::rotate(glm::mat4(1.0f), glm::radians(rotation), glm::vec3(0, 0, 1));
         glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
 
         shader->SetMat4("uTransform", translation * rotationMat * scale);
+
+        RenderCommand::DrawIndexed(vertexArray);
+    }
+
+    void Renderer2D::DrawRect(const glm::vec3& position, const glm::vec2& size, float rotation, const Texture* texture) {
+        vertexArray->Bind();
+
+        auto shader = shaderLibrary.Get("texture");
+        shader->Bind();
+
+        glm::mat4 translation = glm::translate(glm::mat4(1.0f), position);
+        glm::mat4 rotationMat = glm::rotate(glm::mat4(1.0f), glm::radians(rotation), glm::vec3(0, 0, 1));
+        glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
+
+        shader->SetMat4("uTransform", translation * rotationMat * scale);
+
+        texture->Bind(0);
+        shader->SetInt("uTexture", 0);
 
         RenderCommand::DrawIndexed(vertexArray);
     }

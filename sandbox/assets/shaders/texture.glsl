@@ -1,20 +1,17 @@
 #type vertex
 #version 330 core
 
-layout(location = 0) in vec3 aPos;
-layout(location = 1) in vec4 aColor;
-layout(location = 2) in vec2 aTexCoord;
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec2 texCoord;
 
-out vec4 vertexColor;
-out vec2 texCoord;
+out vec2 vTexCoord;
 
-uniform mat4 u_viewProjection;
-uniform mat4 u_transform;
+uniform mat4 uViewProjection;
+uniform mat4 uTransform;
 
 void main() {
-    gl_Position = u_viewProjection * u_transform * vec4(aPos.x, aPos.y, aPos.z, 1.0);
-    vertexColor = aColor;
-    texCoord = aTexCoord;
+    vTexCoord = texCoord;
+    gl_Position = uViewProjection * uTransform * vec4(position, 1.0);
 }
 
 #type pixel
@@ -22,12 +19,10 @@ void main() {
 
 out vec4 FragColor;
 
-in vec4 vertexColor;
-in vec2 texCoord;
+in vec2 vTexCoord;
 
 uniform sampler2D u_texture;
-uniform vec3 u_color;
 
 void main() {
-    FragColor = texture(u_texture, texCoord) * vec4(u_color, 1.0);
+    FragColor = texture(u_texture, vTexCoord);
 }

@@ -3,6 +3,7 @@
 #include "OpenGLGraphicsAPI.h"
 #include "../RenderCommand.h"
 #include "../Renderer.h"
+#include "../Renderer2D.h"
 
 #include "Logger.h"
 
@@ -27,5 +28,6 @@ namespace engine {
 		EG_LOG_INFO("  Version: %s", glGetString(GL_VERSION));
 
         RenderCommand::Init();
+		Renderer2D::Init();
 	}
 }
