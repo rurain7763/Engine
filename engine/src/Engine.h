@@ -29,6 +29,7 @@
 #include "graphics/Buffer.h"
 #include "graphics/VertexArray.h"
 #include "graphics/Renderer.h"
+#include "graphics/Renderer2D.h"
 #include "graphics/RenderCommand.h"
 #include "graphics/Texture.h"
 

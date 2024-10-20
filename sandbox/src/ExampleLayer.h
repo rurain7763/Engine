@@ -1,12 +1,10 @@
 #ifndef EXAMPLE_LAYER_H
 #define EXAMPLE_LAYER_H
 
-#include <Engine.h>
+#include "Engine.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include <memory>
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 class ExampleLayer : public engine::Layer {
 public:

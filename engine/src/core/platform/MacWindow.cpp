@@ -2,7 +2,10 @@
 #include "../DisplayWindow.h"
 #include "../Logger.h"
 
-#include "eventbus/EventBus.h"
+#include "../DisplayWindow.h"
+#include "../Logger.h"
+
+#include "EventBus.h"
 #include "../events/WindowClosedEvent.h"
 #include "../events/WindowResizedEvent.h"
 #include "../events/KeyPressedEvent.h"
@@ -15,85 +18,89 @@
 #include "GLFW/glfw3.h"
 
 namespace engine {
-	DisplayWindow::DisplayWindow() {
-		_eventBus = std::make_unique<EventBus>();
-	}
+    DisplayWindow::DisplayWindow() {
+        _data.eventBus = std::make_unique<EventBus>();
+    }
 
-	void DisplayWindow::Init(int width, int height, const char* title) {
-		EG_ASSERT(glfwInit() == GLFW_TRUE, "Failed to initialize GLFW");
+    void DisplayWindow::Init(int width, int height, const char* title) {
+        EG_ASSERT(glfwInit() == GLFW_TRUE, "Failed to initialize GLFW");
 
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-		GLFWwindow* window = glfwCreateWindow(width, height, title, nullptr, nullptr);
-		EG_ASSERT(window != nullptr, "Failed to create window");
+        GLFWwindow* window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+        EG_ASSERT(window != nullptr, "Failed to create window");
 
-		glfwMakeContextCurrent(window);
+        glfwMakeContextCurrent(window);
 
-		glfwSetWindowUserPointer(window, this);
+        _data.window = window;
+        _data.width = width;
+        _data.height = height;
 
-		glfwSetWindowCloseCallback(window, [](GLFWwindow* window) {
-			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-			displayWindow->GetEventBus()->Publish<WindowClosedEvent>();
-		});
+        glfwSetWindowUserPointer(window, &_data);
 
-		glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height) {
-			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-			displayWindow->GetEventBus()->Publish<WindowResizedEvent>(width, height);
-		});
+        glfwSetWindowCloseCallback(window, [](GLFWwindow* window) {
+            Data* data = (Data*)glfwGetWindowUserPointer(window);
+            data->eventBus->Publish<WindowClosedEvent>();
+        });
 
-		glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-			switch(action) {
-				case GLFW_PRESS:
-					displayWindow->GetEventBus()->Publish<KeyPressedEvent>(key);
-					break;
-				case GLFW_RELEASE:
-					displayWindow->GetEventBus()->Publish<KeyReleasedEvent>(key);
-					break;
-			}
-		});
+        glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height) {
+            Data* data = (Data*)glfwGetWindowUserPointer(window);
+            data->width = width;
+            data->height = height;
+            data->eventBus->Publish<WindowResizedEvent>(width, height);
+        });
 
-		glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
-			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-			switch(action) {
-				case GLFW_PRESS:
-					displayWindow->GetEventBus()->Publish<MouseButtonPressedEvent>(button);
-					break;
-				case GLFW_RELEASE:
-					displayWindow->GetEventBus()->Publish<MouseButtonReleasedEvent>(button);
-					break;
-			}
-		});
+        glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+            Data* data = (Data*)glfwGetWindowUserPointer(window);
+            switch (action) {
+            case GLFW_PRESS:
+                data->eventBus->Publish<KeyPressedEvent>(key);
+                break;
+            case GLFW_RELEASE:
+                data->eventBus->Publish<KeyReleasedEvent>(key);
+                break;
+            }
+        });
 
-		glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos) {
-			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-			displayWindow->GetEventBus()->Publish<MouseMovedEvent>(static_cast<int>(xpos), static_cast<int>(ypos));
-		});
+        glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
+            Data* data = (Data*)glfwGetWindowUserPointer(window);
+            switch (action) {
+            case GLFW_PRESS:
+                data->eventBus->Publish<MouseButtonPressedEvent>(button);
+                break;
+            case GLFW_RELEASE:
+                data->eventBus->Publish<MouseButtonReleasedEvent>(button);
+                break;
+            }
+        });
 
-		glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset) {
-			DisplayWindow* displayWindow = (DisplayWindow*)glfwGetWindowUserPointer(window);
-			displayWindow->GetEventBus()->Publish<MouseScrolledEvent>(xoffset, yoffset);
-		});
+        glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos) {
+            Data* data = (Data*)glfwGetWindowUserPointer(window);
+            data->eventBus->Publish<MouseMovedEvent>(static_cast<int>(xpos), static_cast<int>(ypos));
+            });
 
-		_window = window;
-		_width = width;
-		_height = height;
-	}
+        glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset) {
+            Data* data = (Data*)glfwGetWindowUserPointer(window);
+            data->eventBus->Publish<MouseScrolledEvent>(xoffset, yoffset);
+        });
+    }
 
-	void DisplayWindow::Update() {
-		glfwPollEvents();
-	}
+    void DisplayWindow::Update() {
+        glfwSwapBuffers(static_cast<GLFWwindow*>(_data.window));
+    }
 
-	void DisplayWindow::Destroy() {
-		GLFWwindow* window = (GLFWwindow*)_window;
+    void DisplayWindow::PollEvents() {
+        glfwPollEvents();
+    }
 
-		glfwDestroyWindow(window);
-		glfwTerminate();
-	}
+    void DisplayWindow::Destroy() {
+        glfwDestroyWindow(static_cast<GLFWwindow*>(_data.window));
+        glfwTerminate();
+    }
 }
 
 #endif
