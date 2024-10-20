@@ -57,6 +57,11 @@ namespace engine {
 		glUniform3f(location, vector.x, vector.y, vector.z);
 	}
 
+	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& vector) {
+		GLint location = GetUniformLocation(name);
+		glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+	}
+
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& matrix) {
 		GLint location = GetUniformLocation(name);
 		glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
@@ -189,11 +194,6 @@ namespace engine {
 	void OpenGLShader::SetUniformFloat2(const std::string& name, const glm::vec2& vector) {
 		GLint location = GetUniformLocation(name);
 		glUniform2f(location, vector.x, vector.y);
-	}
-
-	void OpenGLShader::SetUniformFloat4(const std::string& name, const glm::vec4& vector) {
-		GLint location = GetUniformLocation(name);
-		glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
 	}
 
 	void OpenGLShader::SetUniformMat3(const std::string& name, const glm::mat3& matrix) {

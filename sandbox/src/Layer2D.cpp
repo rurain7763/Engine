@@ -4,6 +4,9 @@
 
 void Layer2D::OnAttach(engine::Application& app) {
     engine::Renderer2D::Init();
+
+    _cameraCtrl = std::make_shared<engine::OrthoGraphicCameraController>();
+    _cameraCtrl->Init(app);
 }
 
 void Layer2D::OnDetach() {
@@ -11,8 +14,14 @@ void Layer2D::OnDetach() {
 }
 
 void Layer2D::OnUpdate(engine::Timestem deltaTime) {
-    engine::Renderer2D::BeginScene(_camera->GetCamera());
+    _cameraCtrl->Update(deltaTime);
+
+    engine::RenderCommand::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    engine::RenderCommand::Clear();
+
+    engine::Renderer2D::BeginScene(_cameraCtrl->GetCamera());
     engine::Renderer2D::DrawRect({ 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f, { 0.2f, 0.3f, 0.8f, 1.0f });
+    engine::Renderer2D::DrawRect({ 0.5f, 0.5f }, { 0.5f, 0.5f }, 0.0f, { 0.8f, 0.3f, 0.2f, 1.0f });
     engine::Renderer2D::EndScene();
 }
 

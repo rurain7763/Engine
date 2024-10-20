@@ -5,6 +5,9 @@
 #include "VertexArray.h"
 #include "Buffer.h"
 #include "Texture.h"
+#include "RenderCommand.h"
+
+#include "glm/gtc/matrix_transform.hpp"
 
 namespace engine {
     ShaderLibrary shaderLibrary;

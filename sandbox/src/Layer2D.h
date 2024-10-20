@@ -12,6 +12,9 @@ public:
     virtual void OnDetach() override;
     virtual void OnUpdate(engine::Timestem deltaTime) override;
     virtual void OnGUIUpdate() override;
+
+private:
+    engine::Ref<engine::OrthoGraphicCameraController> _cameraCtrl;
 };
 
 #endif
