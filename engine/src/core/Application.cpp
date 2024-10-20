@@ -34,6 +34,18 @@ namespace engine {
         _imGuiLayerID = _layerGroup->AddLayer<ImGuiLayer>();
     }
 
+    Application::~Application() {
+        for (auto itr = _layerGroup->begin(); itr != _layerGroup->end(); itr++) {
+            (*itr)->OnDetach();
+        }
+        _layerGroup->Destroy();
+
+        Input::Destroy();
+        _window->Destroy();
+
+        _running = false;
+    }
+
     void Application::Run() {
         _running = true;
         _windowHidden = false;
@@ -66,18 +78,6 @@ namespace engine {
             _window->Update();
             _window->PollEvents();
         }
-    }
-
-    void Application::Shutdown() {
-        for(auto itr = _layerGroup->begin(); itr != _layerGroup->end(); itr++) {
-            (*itr)->OnDetach();
-        }
-        _layerGroup->Destroy();
-
-        Input::Destroy();
-        _window->Destroy();
-
-        _running = false;
     }
 
     void Application::OnWindowClosed(WindowClosedEvent& event) {

@@ -15,6 +15,7 @@ void Layer2D::OnDetach() {
 }
 
 void Layer2D::OnUpdate(engine::Timestem deltaTime) {
+    EG_PROFILE_FUNCTION();
     _cameraCtrl->Update(deltaTime);
 
     engine::RenderCommand::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -29,6 +30,5 @@ void Layer2D::OnUpdate(engine::Timestem deltaTime) {
 
 void Layer2D::OnGUIUpdate() {
     ImGui::Begin("2D Layer");
-    ImGui::Text("Hello, 2D Layer!");
     ImGui::End();
 }

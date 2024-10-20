@@ -25,22 +25,27 @@ namespace engine {
 	}
 
 	void OrthoGraphicCameraController::Update(Timestem deltaTime) {
-		glm::vec3 cameraPosition = _camera.GetPosition();
+		glm::vec3 dir = { 0.0f, 0.0f, 0.0f };
 
 		if (Input::IsKeyPressed(EG_KEY_D)) {
-			cameraPosition.x += _cameraMoveSpeed * deltaTime;
+			dir.x = 1.0f;
 		}
 		else if (engine::Input::IsKeyPressed(EG_KEY_A)) {
-			cameraPosition.x -= _cameraMoveSpeed * deltaTime;
+			dir.x = -1.0f;
 		}
 
 		if (engine::Input::IsKeyPressed(EG_KEY_W)) {
-			cameraPosition.y += _cameraMoveSpeed * deltaTime;
+			dir.y = 1.0f;
 		}
 		else if (engine::Input::IsKeyPressed(EG_KEY_S)) {
-			cameraPosition.y -= _cameraMoveSpeed * deltaTime;
+			dir.y = -1.0f;
 		}
 
+		if (dir.x != 0.0f || dir.y != 0.0f) {
+			dir = glm::normalize(dir) * (_cameraMoveSpeed * deltaTime);
+		}
+
+		glm::vec3 cameraPosition = _camera.GetPosition() + dir;
 		_camera.SetPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z);
 	}
 

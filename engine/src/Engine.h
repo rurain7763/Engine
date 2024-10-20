@@ -38,4 +38,9 @@
 // ========================
 #include "utils/Timestem.h"
 
+// ========================
+// Debug
+// ========================
+#include "debug/Instrumentation.h"
+
 #endif // ENGINE_H

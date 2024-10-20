@@ -11,10 +11,9 @@ namespace engine {
     class EG_API Application {
     public:
         Application();
-        virtual ~Application() = default;
+        virtual ~Application();
 
         void Run();
-        void Shutdown();
 
         inline Ref<DisplayWindow> GetWindow() const { return _window; }
         inline Ref<GraphicsContext> GetGraphicsContext() const { return _graphicsContext; }

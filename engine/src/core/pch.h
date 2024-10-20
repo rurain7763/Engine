@@ -14,6 +14,8 @@
 #include <bitset>
 #include <fstream>
 #include <array>
+#include <chrono>
+#include <thread>
 
 #include <stdio.h>
 
